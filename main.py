@@ -20,6 +20,11 @@ class RookCanOnlyMoveInOneAxisError(Exception):
         self.message = "The given move was not valid for a rook, they can only move in one axis"
 
 
+class MoveBlockedByPieceError(Exception):
+    def __init__(self):
+        self.message = "The given move would be valid, but there was a piece in the way"
+
+
 class Piece:
     IsWhite: bool
     Position: Position
@@ -45,18 +50,30 @@ class Rook(Piece):
         self.Taken = False
         self.IsWhite = is_white
 
-    def is_move_valid(self, pos):
+    def is_move_valid(self, b, pos):
         if pos.X not in range(0, 8) or pos.Y not in range(0, 8):
             raise MoveOffBoardError()
         in_same_axis = pos.X == self.Position.X or pos.Y == self.Position.Y
         if not in_same_axis:
             raise RookCanOnlyMoveInOneAxisError()
-        squares_to_check_on_x_axis = [(axis_val, pos.Y) for axis_val in range(self.Position.X, pos.X)]
+
+        step = -1 if (pos.X < self.Position.X or pos.Y < self.Position.Y) else 1
+
+        if step == 1:
+            squares_that_must_be_empty_on_x_axis = [Position(axis_val, pos.Y) for axis_val in range(self.Position.X + 1, pos.X, step)]
+            squares_that_must_be_empty_on_y_axis = [Position(pos.X, axis_val) for axis_val in range(self.Position.Y + 1, pos.Y, step)]
+        elif step == -1:
+            squares_that_must_be_empty_on_x_axis = [Position(axis_val, pos.Y) for axis_val in range(self.Position.X - 1, pos.X, step)]
+            squares_that_must_be_empty_on_y_axis = [Position(pos.X, axis_val) for axis_val in range(self.Position.Y - 1, pos.Y, step)]
+
+        for square in squares_that_must_be_empty_on_x_axis + squares_that_must_be_empty_on_y_axis:
+            if not b.is_square_empty(square):
+                raise MoveBlockedByPieceError()
 
         return pos.X == self.Position.X or pos.Y == self.Position.Y
 
-    def move(self, pos):
-        if self.is_move_valid(pos):
+    def move(self, b, pos):
+        if self.is_move_valid(b, pos):
             print("move was valid, moving to", pos.X, pos.Y)
             self.move_internal(pos)
         else:
@@ -97,9 +114,9 @@ class Board:
     def move_piece(self, is_white, identifier, pos):
         for i, item in enumerate(self.Pieces):
             if (item.is_white() and is_white) and item.Id == identifier:
-                self.Pieces[i].move(pos)
+                self.Pieces[i].move(self, pos)
             elif (item.is_black() and (not is_white)) and item.Id == identifier:
-                self.Pieces[i].move(pos)
+                self.Pieces[i].move(self, pos)
             if (item.is_white() and (not is_white)) and item.Position == pos:
                 item.Taken = True
                 self.Pieces[i] = item
@@ -113,8 +130,18 @@ class Board:
     def move_black_rook_1(self, pos):
         self.move_piece(False, 1, pos)
 
+    def is_square_empty(self, pos):
+        empty = True
+        for item in self.Pieces:
+            if item.Position == pos:
+                empty = False
+
+        return empty
+
 
 if __name__ == '__main__':
     board = Board()
+    board.move_white_rook_1(Position(0, 4))
+    ()
 
 

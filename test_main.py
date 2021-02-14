@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
 
-from main import Board, Position, MoveOffBoardError
+from main import Board, Position, MoveOffBoardError, RookCanOnlyMoveInOneAxisError
 
 
 class TestBoard(unittest.TestCase):
@@ -25,12 +25,6 @@ class TestBoard(TestBoard):
         self.assertEqual(False, self.Board.get_white_rook_1().Taken)
         self.assertEqual(True, self.Board.get_black_rook_1().Taken)
 
-    def test_invalid_move_goes_nowhere(self):
-        self.Board.move_white_rook_1(Position(7, 7))
-
-        r1 = self.Board.get_white_rook_1()
-        self.assertEqual(Position(0, 0), r1.Position)
-
     def test_moving_on_board_does_not_throw_exception(self):
         self.Board.move_white_rook_1(Position(0, 7))
 
@@ -38,5 +32,9 @@ class TestBoard(TestBoard):
         with self.assertRaises(MoveOffBoardError):
             self.Board.move_white_rook_1(Position(0, 8))
 
-        #self.assertRaises(MoveOffBoardError(), self.Board.move_white_rook_1, Position(0,10))
-        #self.Board.move_white_rook_1(Position(0, 9))
+    def test_moving_Rook_on_on_one_axis_does_not_throw_exception(self):
+        self.Board.move_white_rook_1(Position(0, 7))
+
+    def test_moving_Rook_invalidly_throws_exception(self):
+        with self.assertRaises(RookCanOnlyMoveInOneAxisError):
+            self.Board.move_white_rook_1(Position(2, 2))

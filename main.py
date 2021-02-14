@@ -15,6 +15,11 @@ class MoveOffBoardError(Exception):
         self.message = "The given move was off the board x and y values should be between 0 and 8"
 
 
+class RookCanOnlyMoveInOneAxisError(Exception):
+    def __init__(self):
+        self.message = "The given move was not valid for a rook, they can only move in one axis"
+
+
 class Piece:
     IsWhite: bool
     Position: Position
@@ -44,8 +49,9 @@ class Rook(Piece):
         if pos.X not in range(0, 8) or pos.Y not in range(0, 8):
             raise MoveOffBoardError()
         in_same_axis = pos.X == self.Position.X or pos.Y == self.Position.Y
-        if in_same_axis:
-            squares_to_check_on_x_axis = [(axis_val, pos.Y) for axis_val in range(self.Position.X, pos.X)]
+        if not in_same_axis:
+            raise RookCanOnlyMoveInOneAxisError()
+        squares_to_check_on_x_axis = [(axis_val, pos.Y) for axis_val in range(self.Position.X, pos.X)]
 
         return pos.X == self.Position.X or pos.Y == self.Position.Y
 

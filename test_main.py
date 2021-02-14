@@ -47,3 +47,30 @@ class TestBoard(TestBoard):
     def test_moving_when_not_blocked_by_another_piece_does_not_throw_exception(self):
         self.Board.move_white_rook_1(Position(0, 4))
         self.Board.move_black_rook_1(Position(0, 5))
+
+    def test_get_all_valid_moves(self):
+        rook = self.Board.get_white_rook_1()
+        moves = rook.get_all_valid_moves(self.Board)
+        self.assertEqual([
+            Position(0, 1),
+            Position(0, 2),
+            Position(0, 3),
+            Position(0, 4),
+            Position(0, 5),
+            Position(0, 6),
+            Position(0, 7),
+            Position(1, 0),
+            Position(2, 0),
+            Position(3, 0),
+            Position(4, 0),
+            Position(5, 0),
+            Position(6, 0)
+        ], moves)
+
+    def test_does_square_contain_same_colour_piece_returns_true(self):
+        contains_same_colour = self.Board.does_square_contain_same_colour_piece(True, Position(7, 0))
+        self.assertEqual(True, contains_same_colour)
+
+    def test_does_square_contain_same_colour_piece_returns_false(self):
+        contains_same_colour = self.Board.does_square_contain_same_colour_piece(True, Position(0, 7))
+        self.assertEqual(False, contains_same_colour)

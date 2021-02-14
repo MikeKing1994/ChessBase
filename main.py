@@ -25,6 +25,16 @@ class MoveBlockedByPieceError(Exception):
         self.message = "The given move would be valid, but there was a piece in the way"
 
 
+class MoveWentNowhereError(Exception):
+    def __init__(self):
+        self.message = "The given move didn't go anywhere"
+
+
+class CannotCaptureOwnPieceError(Exception):
+    def __init__(self):
+        self.message = "The given move would capture it's own piece"
+
+
 class Piece:
     IsWhite: bool
     Position: Position
@@ -53,6 +63,10 @@ class Rook(Piece):
     def is_move_valid(self, b, pos):
         if pos.X not in range(0, 8) or pos.Y not in range(0, 8):
             raise MoveOffBoardError()
+
+        if pos.X == self.Position.X and pos.Y == self.Position.Y:
+            raise MoveWentNowhereError()
+
         in_same_axis = pos.X == self.Position.X or pos.Y == self.Position.Y
         if not in_same_axis:
             raise RookCanOnlyMoveInOneAxisError()
@@ -70,7 +84,33 @@ class Rook(Piece):
             if not b.is_square_empty(square):
                 raise MoveBlockedByPieceError()
 
-        return pos.X == self.Position.X or pos.Y == self.Position.Y
+        if b.does_square_contain_same_colour_piece(self.is_white(), pos):
+            raise CannotCaptureOwnPieceError()
+
+        return True
+
+    def get_all_valid_moves(self, b):
+        valid_moves = []
+        for x in range(0, 8):
+            for y in range(0, 8):
+                pos = Position(x, y)
+                try:
+                    if self.is_move_valid(b, pos):
+                        valid_moves.append(pos)
+                except MoveOffBoardError:
+                    print("tried a move, but it wasn't on the board")
+                except RookCanOnlyMoveInOneAxisError:
+                    print("tried a move, but it wasn't on the same axis")
+                except MoveBlockedByPieceError:
+                    print("tried a move, but it was blocked by a piece")
+                except MoveWentNowhereError:
+                    print("tried a move, but it went nowhere")
+                except CannotCaptureOwnPieceError:
+                    print("tried a move, but it would have captured it's own piece")
+                finally:
+                    pass
+
+        return valid_moves
 
     def move(self, b, pos):
         if self.is_move_valid(b, pos):
@@ -137,6 +177,24 @@ class Board:
                 empty = False
 
         return empty
+
+    def try_get_piece_on_square(self, pos):
+        for item in self.Pieces:
+            if item.Position == pos:
+                return item
+
+        return None
+
+    def does_square_contain_same_colour_piece(self, moving_piece_is_white, pos):
+        piece = self.try_get_piece_on_square(pos)
+        if piece is None:
+            return False
+        elif piece.is_white() and moving_piece_is_white:
+            return True
+        elif piece.is_black() and not moving_piece_is_white:
+            return True
+        return False
+
 
 
 if __name__ == '__main__':

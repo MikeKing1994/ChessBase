@@ -10,6 +10,27 @@ class Position:
         return self.X == other.X and self.Y == other.Y
 
 
+def check_move_off_board_error(pos):
+    if pos.X not in range(0, 8) or pos.Y not in range(0, 8):
+        raise MoveOffBoardError()
+
+
+def check_move_went_nowhere_error(old_pos, new_pos):
+    if new_pos.X == old_pos.X and new_pos.Y == old_pos.Y:
+        raise MoveWentNowhereError()
+
+
+def check_move_blocked_by_other_pieces(b, squares_that_must_be_empty):
+    for square in squares_that_must_be_empty:
+        if not b.is_square_empty(square):
+            raise MoveBlockedByPieceError()
+
+
+def check_capture_own_piece_error(b, is_white, pos):
+    if b.does_square_contain_same_colour_piece(is_white, pos):
+        raise CannotCaptureOwnPieceError()
+
+
 class MoveOffBoardError(Exception):
     def __init__(self):
         self.message = "The given move was off the board x and y values should be between 0 and 8"
@@ -53,6 +74,18 @@ class Piece:
         return self.IsWhite
 
 
+class Bishop(Piece):
+    def __init__(self, id, x, y, is_white):
+        self.Id = id
+        self.Position = Position(x, y)
+        self.Taken = False
+        self.IsWhite = is_white
+
+    def is_move_valid(self, b, pos):
+        check_move_off_board_error(pos)
+        check_move_went_nowhere_error(self.Position, pos)
+
+
 class Rook(Piece):
     def __init__(self, id, x, y, is_white):
         self.Id = id
@@ -61,11 +94,8 @@ class Rook(Piece):
         self.IsWhite = is_white
 
     def is_move_valid(self, b, pos):
-        if pos.X not in range(0, 8) or pos.Y not in range(0, 8):
-            raise MoveOffBoardError()
-
-        if pos.X == self.Position.X and pos.Y == self.Position.Y:
-            raise MoveWentNowhereError()
+        check_move_off_board_error(pos)
+        check_move_went_nowhere_error(self.Position, pos)
 
         in_same_axis = pos.X == self.Position.X or pos.Y == self.Position.Y
         if not in_same_axis:
@@ -80,12 +110,8 @@ class Rook(Piece):
             squares_that_must_be_empty_on_x_axis = [Position(axis_val, pos.Y) for axis_val in range(self.Position.X - 1, pos.X, step)]
             squares_that_must_be_empty_on_y_axis = [Position(pos.X, axis_val) for axis_val in range(self.Position.Y - 1, pos.Y, step)]
 
-        for square in squares_that_must_be_empty_on_x_axis + squares_that_must_be_empty_on_y_axis:
-            if not b.is_square_empty(square):
-                raise MoveBlockedByPieceError()
-
-        if b.does_square_contain_same_colour_piece(self.is_white(), pos):
-            raise CannotCaptureOwnPieceError()
+        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty_on_x_axis + squares_that_must_be_empty_on_y_axis)
+        check_capture_own_piece_error(b, self.is_white(), pos)
 
         return True
 

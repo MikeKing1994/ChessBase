@@ -1,7 +1,7 @@
 import unittest
 from unittest import TestCase
 
-from main import Board, Position, MoveOffBoardError, RookCanOnlyMoveInOneAxisError
+from main import Board, Position, MoveOffBoardError, RookCanOnlyMoveInOneAxisError, MoveBlockedByPieceError
 
 
 class TestBoard(unittest.TestCase):
@@ -38,3 +38,12 @@ class TestBoard(TestBoard):
     def test_moving_Rook_invalidly_throws_exception(self):
         with self.assertRaises(RookCanOnlyMoveInOneAxisError):
             self.Board.move_white_rook_1(Position(2, 2))
+
+    def test_moving_when_blocked_by_another_piece_throws_exception(self):
+        with self.assertRaises(MoveBlockedByPieceError):
+            self.Board.move_white_rook_1(Position(0, 4))
+            self.Board.move_black_rook_1(Position(0, 2))
+
+    def test_moving_when_not_blocked_by_another_piece_does_not_throw_exception(self):
+        self.Board.move_white_rook_1(Position(0, 4))
+        self.Board.move_black_rook_1(Position(0, 5))

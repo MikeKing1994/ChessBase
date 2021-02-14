@@ -10,6 +10,11 @@ class Position:
         return self.X == other.X and self.Y == other.Y
 
 
+class MoveOffBoardError(Exception):
+    def __init__(self):
+        self.message = "The given move was off the board x and y values should be between 0 and 8"
+
+
 class Piece:
     IsWhite: bool
     Position: Position
@@ -36,6 +41,12 @@ class Rook(Piece):
         self.IsWhite = is_white
 
     def is_move_valid(self, pos):
+        if pos.X not in range(0, 8) or pos.Y not in range(0, 8):
+            raise MoveOffBoardError()
+        in_same_axis = pos.X == self.Position.X or pos.Y == self.Position.Y
+        if in_same_axis:
+            squares_to_check_on_x_axis = [(axis_val, pos.Y) for axis_val in range(self.Position.X, pos.X)]
+
         return pos.X == self.Position.X or pos.Y == self.Position.Y
 
     def move(self, pos):
@@ -50,9 +61,9 @@ class Board:
     def __init__(self):
         self.Pieces = [
             Rook(1, 0, 0, True),
-            Rook(2, 8, 0, True),
-            Rook(1, 0, 8, False),
-            Rook(2, 8, 8, False)
+            Rook(2, 7, 0, True),
+            Rook(1, 0, 7, False),
+            Rook(2, 7, 7, False)
         ]
 
     def get_all_white_pieces(self):
@@ -77,30 +88,27 @@ class Board:
         rook1 = [piece for piece in self.Pieces if piece.is_black() and piece.Id == 1]
         return rook1[0]
 
-    def move_white_rook_1(self, pos):
+    def move_piece(self, is_white, identifier, pos):
         for i, item in enumerate(self.Pieces):
-            if item.is_white() and item.Id == 1:
+            if (item.is_white() and is_white) and item.Id == identifier:
                 self.Pieces[i].move(pos)
-            if item.is_black() and item.Position == pos:
+            elif (item.is_black() and (not is_white)) and item.Id == identifier:
+                self.Pieces[i].move(pos)
+            if (item.is_white() and (not is_white)) and item.Position == pos:
+                item.Taken = True
+                self.Pieces[i] = item
+            if (item.is_black() and is_white) and item.Position == pos:
                 item.Taken = True
                 self.Pieces[i] = item
 
+    def move_white_rook_1(self, pos):
+        self.move_piece(True, 1, pos)
+
     def move_black_rook_1(self, pos):
-        for i, item in enumerate(self.Pieces):
-            if item.is_black() and item.Id == 1:
-                self.Pieces[i].move(pos)
-            if item.is_white() and item.Position == pos:
-                item.Taken = True
-                self.Pieces[i] = item
+        self.move_piece(False, 1, pos)
 
 
 if __name__ == '__main__':
     board = Board()
-    board.move_white_rook_1(Position(0, 8))
-    board.move_white_rook_1(Position(8, 8))
-
-    x = board.get_all_black_pieces()
-    print(board.how_many_pieces_for_white())
-    print(board.how_many_pieces_for_black())
 
 

@@ -11,11 +11,11 @@ class TestBoard(unittest.TestCase):
 
 class TestInit(TestBoard):
     def test_initial_pieces(self):
-        self.assertEqual(4, len(self.Board.Pieces))
+        self.assertEqual(8, len(self.Board.Pieces))
 
     def test_get_all_white_pieces(self):
         all_white = len(self.Board.get_all_white_pieces())
-        self.assertEqual(2, all_white)
+        self.assertEqual(4, all_white)
 
 
 class TestBoard(TestBoard):
@@ -59,12 +59,7 @@ class TestBoard(TestBoard):
             Position(0, 5),
             Position(0, 6),
             Position(0, 7),
-            Position(1, 0),
-            Position(2, 0),
-            Position(3, 0),
-            Position(4, 0),
-            Position(5, 0),
-            Position(6, 0)
+            Position(1, 0)
         ], moves)
 
     def test_does_square_contain_same_colour_piece_returns_true(self):

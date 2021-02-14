@@ -41,6 +41,11 @@ class RookCanOnlyMoveInOneAxisError(Exception):
         self.message = "The given move was not valid for a rook, they can only move in one axis"
 
 
+class BishopMayOnlyMoveDiagonallyException(Exception):
+    def __init__(self):
+        self.message = "The given move was not valid for a bishop, they can only move diagonally"
+
+
 class MoveBlockedByPieceError(Exception):
     def __init__(self):
         self.message = "The given move would be valid, but there was a piece in the way"
@@ -84,6 +89,33 @@ class Bishop(Piece):
     def is_move_valid(self, b, pos):
         check_move_off_board_error(pos)
         check_move_went_nowhere_error(self.Position, pos)
+
+        delta_x = pos.X - self.Position.X
+        delta_y = pos.Y - self.Position.Y
+
+        if abs(delta_x) != abs(delta_y):
+            raise BishopMayOnlyMoveDiagonallyException()
+
+        if delta_x > 0 and delta_y > 0:
+            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(delta_x)]
+        if delta_x < 0 and delta_y < 0:
+            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
+        if delta_x > 0 > delta_y:
+            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y - d) for d in range(delta_x)]
+        if delta_x < 0 < delta_y:
+            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
+
+        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
+        check_capture_own_piece_error(b, self.is_white(), pos)
+
+        return True
+
+    def move(self, b, pos):
+        if self.is_move_valid(b, pos):
+            print("move was valid, moving to", pos.X, pos.Y)
+            self.move_internal(pos)
+        else:
+            print("move invalid, could not move to", pos.X, pos.Y)
 
 
 class Rook(Piece):
@@ -152,7 +184,11 @@ class Board:
             Rook(1, 0, 0, True),
             Rook(2, 7, 0, True),
             Rook(1, 0, 7, False),
-            Rook(2, 7, 7, False)
+            Rook(2, 7, 7, False),
+            Bishop(1, 2, 0, True),
+            Bishop(2, 5, 0, True),
+            Bishop(1, 2, 7, False),
+            Bishop(1, 5, 7, False)
         ]
 
     def get_all_white_pieces(self):
@@ -177,12 +213,14 @@ class Board:
         rook1 = [piece for piece in self.Pieces if piece.is_black() and piece.Id == 1]
         return rook1[0]
 
-    def move_piece(self, is_white, identifier, pos):
+    def move_piece(self, piece_type, is_white, identifier, pos):
         for i, item in enumerate(self.Pieces):
-            if (item.is_white() and is_white) and item.Id == identifier:
-                self.Pieces[i].move(self, pos)
-            elif (item.is_black() and (not is_white)) and item.Id == identifier:
-                self.Pieces[i].move(self, pos)
+            if isinstance(self.Pieces[i], piece_type):
+                if (item.is_white() and is_white) and item.Id == identifier:
+                    self.Pieces[i].move(self, pos)
+                elif (item.is_black() and (not is_white)) and item.Id == identifier:
+                    self.Pieces[i].move(self, pos)
+
             if (item.is_white() and (not is_white)) and item.Position == pos:
                 item.Taken = True
                 self.Pieces[i] = item
@@ -191,10 +229,10 @@ class Board:
                 self.Pieces[i] = item
 
     def move_white_rook_1(self, pos):
-        self.move_piece(True, 1, pos)
+        self.move_piece(Rook, True, 1, pos)
 
     def move_black_rook_1(self, pos):
-        self.move_piece(False, 1, pos)
+        self.move_piece(Rook, False, 1, pos)
 
     def is_square_empty(self, pos):
         empty = True

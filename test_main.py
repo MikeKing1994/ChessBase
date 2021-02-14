@@ -32,7 +32,7 @@ class TestBoard(TestBoard):
         with self.assertRaises(MoveOffBoardError):
             self.Board.move_white_rook_1(Position(0, 8))
 
-    def test_moving_Rook_on_on_one_axis_does_not_throw_exception(self):
+    def test_moving_rook_on_on_one_axis_does_not_throw_exception(self):
         self.Board.move_white_rook_1(Position(0, 7))
 
     def test_moving_Rook_invalidly_throws_exception(self):

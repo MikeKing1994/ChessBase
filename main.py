@@ -237,14 +237,14 @@ class Board:
     def is_square_empty(self, pos):
         empty = True
         for item in self.Pieces:
-            if item.Position == pos:
+            if item.Position == pos and not item.Taken:
                 empty = False
 
         return empty
 
     def try_get_piece_on_square(self, pos):
         for item in self.Pieces:
-            if item.Position == pos:
+            if item.Position == pos and not item.Taken:
                 return item
 
         return None
@@ -274,7 +274,7 @@ class Board:
 if __name__ == '__main__':
     board = Board()
     board.print()
-    board.move_white_rook_1(Position(0, 4))
+    board.move_white_rook_1(Position(0, 7))
     board.print()
     ()
 

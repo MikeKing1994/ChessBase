@@ -259,11 +259,23 @@ class Board:
             return True
         return False
 
+    def print(self):
+        for y in range(7, -1, -1):
+            rank = []
+            for x in range(0, 8):
+                if self.is_square_empty(Position(x, y)):
+                    rank.append(0)
+                else:
+                    rank.append(1)
+
+            print(rank)
 
 
 if __name__ == '__main__':
     board = Board()
+    board.print()
     board.move_white_rook_1(Position(0, 4))
+    board.print()
     ()
 
 

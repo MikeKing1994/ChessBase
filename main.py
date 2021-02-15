@@ -78,6 +78,16 @@ class Piece:
     def is_white(self):
         return self.IsWhite
 
+    def move(self, b, pos):
+        if self.is_move_valid(b, pos):
+            print("move was valid, moving to", pos.X, pos.Y)
+            self.move_internal(pos)
+        else:
+            print("move invalid, could not move to", pos.X, pos.Y)
+
+    def is_move_valid(self, b, pos):
+        raise Exception("must be implemented by each piece that inherits")
+
 
 class Bishop(Piece):
     def __init__(self, id, x, y, is_white):
@@ -109,13 +119,6 @@ class Bishop(Piece):
         check_capture_own_piece_error(b, self.is_white(), pos)
 
         return True
-
-    def move(self, b, pos):
-        if self.is_move_valid(b, pos):
-            print("move was valid, moving to", pos.X, pos.Y)
-            self.move_internal(pos)
-        else:
-            print("move invalid, could not move to", pos.X, pos.Y)
 
 
 class Rook(Piece):
@@ -169,13 +172,6 @@ class Rook(Piece):
                     pass
 
         return valid_moves
-
-    def move(self, b, pos):
-        if self.is_move_valid(b, pos):
-            print("move was valid, moving to", pos.X, pos.Y)
-            self.move_internal(pos)
-        else:
-            print("move invalid, could not move to", pos.X, pos.Y)
 
 
 class Board:

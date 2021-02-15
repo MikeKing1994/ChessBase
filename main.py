@@ -41,9 +41,14 @@ class RookCanOnlyMoveInOneAxisError(Exception):
         self.message = "The given move was not valid for a rook, they can only move in one axis"
 
 
-class BishopMayOnlyMoveDiagonallyException(Exception):
+class BishopMayOnlyMoveDiagonallyError(Exception):
     def __init__(self):
         self.message = "The given move was not valid for a bishop, they can only move diagonally"
+
+
+class KnightMayOnlyMoveLikeAKnightError(Exception):
+    def __init__(self):
+        self.message = "The given move was not valid for a knight, they can only move in L shapes"
 
 
 class MoveBlockedByPieceError(Exception):
@@ -88,6 +93,61 @@ class Piece:
     def is_move_valid(self, b, pos):
         raise Exception("must be implemented by each piece that inherits")
 
+    def get_all_valid_moves(self, b):
+        valid_moves = []
+        for x in range(0, 8):
+            for y in range(0, 8):
+                pos = Position(x, y)
+                try:
+                    if self.is_move_valid(b, pos):
+                        valid_moves.append(pos)
+                except MoveOffBoardError:
+                    print("tried a move, but it wasn't on the board")
+                except RookCanOnlyMoveInOneAxisError:
+                    print("tried a move, but it wasn't on the same axis for a rook")
+                except BishopMayOnlyMoveDiagonallyError:
+                    print("tried a move, but it wasn't valid for a bishop")
+                except KnightMayOnlyMoveLikeAKnightError:
+                    print("tried a move, but it wasn't valid for a knight")
+                except MoveBlockedByPieceError:
+                    print("tried a move, but it was blocked by a piece")
+                except MoveWentNowhereError:
+                    print("tried a move, but it went nowhere")
+                except CannotCaptureOwnPieceError:
+                    print("tried a move, but it would have captured it's own piece")
+                finally:
+                    pass
+
+        return valid_moves
+
+
+class Knight(Piece):
+    def __init__(self, id, x, y, is_white):
+        self.Id = id
+        self.Position = Position(x, y)
+        self.Taken = False
+        self.IsWhite = is_white
+
+    def is_move_valid(self, b, pos):
+        check_move_off_board_error(pos)
+        check_move_went_nowhere_error(self.Position, pos)
+        check_capture_own_piece_error(b, self.is_white(), pos)
+
+        delta_x = pos.X - self.Position.X
+        delta_y = pos.Y - self.Position.Y
+
+        move_valid = False
+
+        if abs(delta_x) == 2 and abs(delta_y == 1):
+            move_valid = True
+        elif abs(delta_x) == 1 and abs(delta_y) == 2:
+            move_valid = True
+
+        if not move_valid:
+            raise KnightMayOnlyMoveLikeAKnightError()
+
+        return True
+
 
 class Bishop(Piece):
     def __init__(self, id, x, y, is_white):
@@ -104,7 +164,7 @@ class Bishop(Piece):
         delta_y = pos.Y - self.Position.Y
 
         if abs(delta_x) != abs(delta_y):
-            raise BishopMayOnlyMoveDiagonallyException()
+            raise BishopMayOnlyMoveDiagonallyError()
 
         if delta_x > 0 and delta_y > 0:
             squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(delta_x)]
@@ -150,29 +210,6 @@ class Rook(Piece):
 
         return True
 
-    def get_all_valid_moves(self, b):
-        valid_moves = []
-        for x in range(0, 8):
-            for y in range(0, 8):
-                pos = Position(x, y)
-                try:
-                    if self.is_move_valid(b, pos):
-                        valid_moves.append(pos)
-                except MoveOffBoardError:
-                    print("tried a move, but it wasn't on the board")
-                except RookCanOnlyMoveInOneAxisError:
-                    print("tried a move, but it wasn't on the same axis")
-                except MoveBlockedByPieceError:
-                    print("tried a move, but it was blocked by a piece")
-                except MoveWentNowhereError:
-                    print("tried a move, but it went nowhere")
-                except CannotCaptureOwnPieceError:
-                    print("tried a move, but it would have captured it's own piece")
-                finally:
-                    pass
-
-        return valid_moves
-
 
 class Board:
     def __init__(self):
@@ -181,6 +218,10 @@ class Board:
             Rook(2, 7, 0, True),
             Rook(1, 0, 7, False),
             Rook(2, 7, 7, False),
+            Knight(1, 1, 0, True),
+            Knight(2, 6, 0, True),
+            Knight(1, 1, 7, False),
+            Knight(1, 6, 7, False),
             Bishop(1, 2, 0, True),
             Bishop(2, 5, 0, True),
             Bishop(1, 2, 7, False),

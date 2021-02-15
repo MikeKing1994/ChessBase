@@ -11,11 +11,11 @@ class TestBoard(unittest.TestCase):
 
 class TestInit(TestBoard):
     def test_initial_pieces(self):
-        self.assertEqual(12, len(self.Board.Pieces))
+        self.assertEqual(14, len(self.Board.Pieces))
 
     def test_get_all_white_pieces(self):
         all_white = len(self.Board.get_all_white_pieces())
-        self.assertEqual(6, all_white)
+        self.assertEqual(7, all_white)
 
 
 class TestBoard(TestBoard):

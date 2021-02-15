@@ -51,6 +51,12 @@ class KnightMayOnlyMoveLikeAKnightError(Exception):
         self.message = "The given move was not valid for a knight, they can only move in L shapes"
 
 
+class QueenMayOnlyMoveLikeAQueenError(Exception):
+    def __init__(self):
+        self.message = \
+            "The given move was not valid for a queen, they can only move diagonally, vertically or horizontally"
+
+
 class MoveBlockedByPieceError(Exception):
     def __init__(self):
         self.message = "The given move would be valid, but there was a piece in the way"
@@ -181,6 +187,56 @@ class Bishop(Piece):
         return True
 
 
+class Queen(Piece):
+    def __init__(self, id, x, y, is_white):
+        self.Id = id
+        self.Position = Position(x, y)
+        self.Taken = False
+        self.IsWhite = is_white
+
+    def is_move_valid(self, b, pos):
+        check_move_off_board_error(pos)
+        check_move_went_nowhere_error(self.Position, pos)
+        check_capture_own_piece_error(b, self.is_white(), pos)
+
+        delta_x = pos.X - self.Position.X
+        delta_y = pos.Y - self.Position.Y
+
+        move_valid = False
+
+        if delta_x == 0 or delta_y == 0:
+            move_valid = True
+        elif abs(delta_x) == abs(delta_y):
+            move_valid = True
+        if not move_valid:
+            raise QueenMayOnlyMoveLikeAQueenError()
+
+        if delta_x > 0 and delta_y > 0:  # diagonally up right
+            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(delta_x)]
+        if delta_x < 0 and delta_y < 0:  # diagonally left down
+            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
+        if delta_x > 0 > delta_y:  # diagonally down right
+            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y - d) for d in range(delta_x)]
+        if delta_x < 0 < delta_y:  # diagonally down left
+            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
+        if delta_x == 0 and delta_y > 0:  # vertically up
+            squares_that_must_be_empty = [Position(pos.X, axis_val) for axis_val in
+                                          range(self.Position.Y + 1, pos.Y, 1)]
+        if delta_x == 0 and delta_y < 0:  # vertically down
+            squares_that_must_be_empty = [Position(pos.X, axis_val) for axis_val in
+                                          range(self.Position.Y - 1, pos.Y, -1)]
+        if delta_y == 0 and delta_x < 0:  # horizontally left
+            squares_that_must_be_empty = [Position(axis_val, pos.Y) for axis_val in
+                                          range(self.Position.X - 1, pos.X, -1)]
+        if delta_y == 0 and delta_x > 0:  # horizontally right
+            squares_that_must_be_empty = [Position(axis_val, pos.Y) for axis_val in
+                                          range(self.Position.X + 1, pos.X, 1)]
+
+        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
+
+        return True
+
+
 class Rook(Piece):
     def __init__(self, id, x, y, is_white):
         self.Id = id
@@ -196,16 +252,23 @@ class Rook(Piece):
         if not in_same_axis:
             raise RookCanOnlyMoveInOneAxisError()
 
-        step = -1 if (pos.X < self.Position.X or pos.Y < self.Position.Y) else 1
+        delta_x = pos.X - self.Position.X
+        delta_y = pos.Y - self.Position.Y
 
-        if step == 1:
-            squares_that_must_be_empty_on_x_axis = [Position(axis_val, pos.Y) for axis_val in range(self.Position.X + 1, pos.X, step)]
-            squares_that_must_be_empty_on_y_axis = [Position(pos.X, axis_val) for axis_val in range(self.Position.Y + 1, pos.Y, step)]
-        elif step == -1:
-            squares_that_must_be_empty_on_x_axis = [Position(axis_val, pos.Y) for axis_val in range(self.Position.X - 1, pos.X, step)]
-            squares_that_must_be_empty_on_y_axis = [Position(pos.X, axis_val) for axis_val in range(self.Position.Y - 1, pos.Y, step)]
+        if delta_x == 0 and delta_y > 0:  # vertically up
+            squares_that_must_be_empty = [Position(pos.X, axis_val) for axis_val in
+                                          range(self.Position.Y + 1, pos.Y, 1)]
+        if delta_x == 0 and delta_y < 0:  # vertically down
+            squares_that_must_be_empty = [Position(pos.X, axis_val) for axis_val in
+                                          range(self.Position.Y - 1, pos.Y, -1)]
+        if delta_y == 0 and delta_x < 0:  # horizontally left
+            squares_that_must_be_empty = [Position(axis_val, pos.Y) for axis_val in
+                                          range(self.Position.X - 1, pos.X, -1)]
+        if delta_y == 0 and delta_x > 0:  # horizontally right
+            squares_that_must_be_empty = [Position(axis_val, pos.Y) for axis_val in
+                                          range(self.Position.X + 1, pos.X, 1)]
 
-        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty_on_x_axis + squares_that_must_be_empty_on_y_axis)
+        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
         check_capture_own_piece_error(b, self.is_white(), pos)
 
         return True
@@ -225,7 +288,10 @@ class Board:
             Bishop(1, 2, 0, True),
             Bishop(2, 5, 0, True),
             Bishop(1, 2, 7, False),
-            Bishop(1, 5, 7, False)
+            Bishop(1, 5, 7, False),
+            Queen(1, 3, 0, True),
+            Queen(1, 3, 7, False)
+
         ]
 
     def get_all_white_pieces(self):
@@ -314,5 +380,3 @@ if __name__ == '__main__':
     board.move_white_rook_1(Position(0, 4))
     board.print()
     ()
-
-

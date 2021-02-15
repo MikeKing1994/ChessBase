@@ -57,6 +57,12 @@ class QueenMayOnlyMoveLikeAQueenError(Exception):
             "The given move was not valid for a queen, they can only move diagonally, vertically or horizontally"
 
 
+class KingMayOnlyMoveLikeAKingError(Exception):
+    def __init__(self):
+        self.message = \
+            "The given move was not valid for a king, they can only move one square"
+
+
 class MoveBlockedByPieceError(Exception):
     def __init__(self):
         self.message = "The given move would be valid, but there was a piece in the way"
@@ -237,6 +243,31 @@ class Queen(Piece):
         return True
 
 
+class King(Piece):
+    def __init__(self, id, x, y, is_white):
+        self.Id = id
+        self.Position = Position(x, y)
+        self.Taken = False
+        self.IsWhite = is_white
+
+    def is_move_valid(self, b, pos):
+        check_move_off_board_error(pos)
+        check_move_went_nowhere_error(self.Position, pos)
+        check_capture_own_piece_error(b, self.is_white(), pos)
+
+        delta_x = pos.X - self.Position.X
+        delta_y = pos.Y - self.Position.Y
+
+        move_valid = False
+
+        if abs(delta_x) == (1 or 0) and abs(delta_y) == (1 or 0):
+            move_valid = True
+        if not move_valid:
+            raise KingMayOnlyMoveLikeAKingError()
+
+        return True
+
+
 class Rook(Piece):
     def __init__(self, id, x, y, is_white):
         self.Id = id
@@ -290,7 +321,9 @@ class Board:
             Bishop(1, 2, 7, False),
             Bishop(1, 5, 7, False),
             Queen(1, 3, 0, True),
-            Queen(1, 3, 7, False)
+            Queen(1, 3, 7, False),
+            King(1, 4, 0, True),
+            King(1, 4, 7, False)
 
         ]
 

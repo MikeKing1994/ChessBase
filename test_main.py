@@ -1,7 +1,8 @@
 import unittest
 from unittest import TestCase
 
-from main import Board, Position, MoveOffBoardError, RookCanOnlyMoveInOneAxisError, MoveBlockedByPieceError
+from main import (Board, Position, MoveOffBoardError, RookCanOnlyMoveInOneAxisError, MoveBlockedByPieceError, Rook,
+                  King, Knight)
 
 
 class TestBoard(unittest.TestCase):
@@ -68,3 +69,38 @@ class TestBoard(TestBoard):
     def test_does_square_contain_same_colour_piece_returns_false(self):
         contains_same_colour = self.Board.does_square_contain_same_colour_piece(True, Position(0, 7))
         self.assertEqual(False, contains_same_colour)
+
+    def test_get_white_rook_1(self):
+        rook = self.Board.get_white_rook_1()
+        self.assertIsInstance(rook, Rook)
+        self.assertEqual(1, rook.Id)
+        self.assertEqual(True, rook.is_white())
+
+    def test_get_white_knight_1(self):
+        knight = self.Board.get_white_knight_1()
+        self.assertIsInstance(knight, Knight)
+        self.assertEqual(1, knight.Id)
+        self.assertEqual(True, knight.is_white())
+
+    def test_get_black_rook_1(self):
+        rook = self.Board.get_black_rook_1()
+        self.assertIsInstance(rook, Rook)
+        self.assertEqual(1, rook.Id)
+        self.assertEqual(False, rook.is_white())
+
+    def test_get_white_king(self):
+        king = self.Board.get_white_king()
+        self.assertIsInstance(king, King)
+        self.assertEqual(1, king.Id)
+        self.assertEqual(True, king.is_white())
+
+    def test_is_white_king_in_check_returns_false(self):
+        new_board = Board()
+        new_board.move_black_rook_1(Position(0, 5))
+        self.assertEqual(False, new_board.is_white_king_in_check())
+
+    def test_is_white_king_in_check_returns_true(self):
+        new_board = Board()
+        new_board.move_black_rook_1(Position(0, 5))
+        new_board.move_black_rook_1(Position(4, 5))
+        self.assertEqual(True, new_board.is_white_king_in_check())

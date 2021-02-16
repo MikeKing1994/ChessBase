@@ -114,19 +114,32 @@ class Piece:
                     if self.is_move_valid(b, pos):
                         valid_moves.append(pos)
                 except MoveOffBoardError:
-                    print("tried a move, but it wasn't on the board")
+                    pass
+                    # print("tried a move, but it wasn't on the board")
                 except RookCanOnlyMoveInOneAxisError:
-                    print("tried a move, but it wasn't on the same axis for a rook")
+                    pass
+                    # print("tried a move, but it wasn't on the same axis for a rook")
                 except BishopMayOnlyMoveDiagonallyError:
-                    print("tried a move, but it wasn't valid for a bishop")
+                    pass
+                    # print("tried a move, but it wasn't valid for a bishop")
                 except KnightMayOnlyMoveLikeAKnightError:
-                    print("tried a move, but it wasn't valid for a knight")
+                    pass
+                    # print("tried a move, but it wasn't valid for a knight")
+                except QueenMayOnlyMoveLikeAQueenError:
+                    pass
+                    # print("tried a move, but it wasn't valid for a knight")
+                except KingMayOnlyMoveLikeAKingError:
+                    pass
+                    # print("tried a move, but it wasn't valid for a knight")
                 except MoveBlockedByPieceError:
-                    print("tried a move, but it was blocked by a piece")
+                    pass
+                    # print("tried a move, but it was blocked by a piece")
                 except MoveWentNowhereError:
-                    print("tried a move, but it went nowhere")
+                    pass
+                    # print("tried a move, but it went nowhere")
                 except CannotCaptureOwnPieceError:
-                    print("tried a move, but it would have captured it's own piece")
+                    pass
+                    # print("tried a move, but it would have captured it's own piece")
                 finally:
                     pass
 
@@ -342,12 +355,16 @@ class Board:
         return len([x for x in pieces if not x.Taken])
 
     def get_white_rook_1(self):
-        rook1 = [piece for piece in self.Pieces if piece.is_white() and piece.Id == 1]
-        return rook1[0]
+        return next((piece for piece in self.Pieces if piece.is_white() and piece.Id == 1 and isinstance(piece, Rook)))
+
+    def get_white_knight_1(self):
+        return next((piece for piece in self.Pieces if piece.is_white() and piece.Id == 1 and isinstance(piece, Knight)))
+
+    def get_white_king(self):
+        return next((piece for piece in self.Pieces if piece.is_white() and piece.Id == 1 and isinstance(piece, King)))
 
     def get_black_rook_1(self):
-        rook1 = [piece for piece in self.Pieces if piece.is_black() and piece.Id == 1]
-        return rook1[0]
+        return next((piece for piece in self.Pieces if piece.is_black() and piece.Id == 1 and isinstance(piece, Rook)))
 
     def move_piece(self, piece_type, is_white, identifier, pos):
         for i, item in enumerate(self.Pieces):
@@ -405,6 +422,17 @@ class Board:
                     rank.append(1)
 
             print(rank)
+
+    def is_white_king_in_check(self):
+        black_pieces = self.get_all_black_pieces()
+        king = self.get_white_king()
+        for p in black_pieces:
+            valid_moves_for_black = p.get_all_valid_moves(self)
+            for move in valid_moves_for_black:
+                if move == king.Position:
+                    return True
+
+        return False
 
 
 if __name__ == '__main__':

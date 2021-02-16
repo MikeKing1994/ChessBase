@@ -487,10 +487,22 @@ class Board:
         for y in range(7, -1, -1):
             rank = []
             for x in range(0, 8):
-                if self.is_square_empty(Position(x, y)):
-                    rank.append(0)
+                piece_on_square = self.try_get_piece_on_square(Position(x, y))
+                if isinstance(piece_on_square, King):
+                    rank.append('K')
+                elif isinstance(piece_on_square, Queen):
+                    rank.append('Q')
+                elif isinstance(piece_on_square, Knight):
+                    rank.append('N')
+                elif isinstance(piece_on_square, Bishop):
+                    rank.append('B')
+                elif isinstance(piece_on_square, Rook):
+                    rank.append('R')
+                elif isinstance(piece_on_square, Pawn):
+                    rank.append('P')
+
                 else:
-                    rank.append(1)
+                    rank.append('0')
 
             print(rank)
 

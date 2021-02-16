@@ -96,6 +96,12 @@ class Piece:
                 except KingMayOnlyMoveLikeAKingError:
                     pass
                     # print("tried a move, but it wasn't valid for a knight")
+                except PawnMayOnlyMoveLikeAPawnError:
+                    pass
+                    # print("tried a move, but it wasn't valid for a pawn")
+                except DiagonalPawnMoveMustBeACaptureError:
+                    pass
+                    # print("tried a move, but it wasn't valid for a pawn")
                 except MoveBlockedByPieceError:
                     pass
                     # print("tried a move, but it was blocked by a piece")
@@ -255,6 +261,53 @@ class King(Piece):
         return True
 
 
+class Pawn(Piece):
+    def __init__(self, id, x, y, is_white):
+        self.Id = id
+        self.Position = Position(x, y)
+        self.Taken = False
+        self.IsWhite = is_white
+
+    def is_move_valid(self, ignore_king_check, b, pos):
+        check_move_off_board_error(pos)
+        check_move_went_nowhere_error(self.Position, pos)
+        check_capture_own_piece_error(b, self.is_white(), pos)
+
+        delta_x = pos.X - self.Position.X
+        delta_y = pos.Y - self.Position.Y
+
+        move_valid = False
+
+        # Normal move directly forward for white
+        if self.IsWhite and delta_y == 1 and delta_x == 0:
+            check_move_blocked_by_other_pieces(b, [pos])
+            move_valid = True
+
+        # Normal move directly down for black
+        if (not self.IsWhite) and delta_y == -1 and delta_x == 0:
+            check_move_blocked_by_other_pieces(b, [pos])
+            move_valid = True
+
+        # capture diagonally, must be a capture
+        if abs(delta_y) == 1 and abs(delta_x) == 1:
+            piece_on_new_square = b.try_get_piece_on_square(pos)
+            if piece_on_new_square is None or (piece_on_new_square.is_white() == self.IsWhite):
+                raise DiagonalPawnMoveMustBeACaptureError()
+            move_valid = True
+
+        # Can move two squares forward from it's starting position
+        if delta_y == 2 and self.Position.Y in [1, 6]:
+            move_valid = True
+
+        if not move_valid:
+            raise PawnMayOnlyMoveLikeAPawnError()
+
+        if not ignore_king_check:
+            check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)
+
+        return True
+
+
 class Rook(Piece):
     def __init__(self, id, x, y, is_white):
         self.Id = id
@@ -313,7 +366,23 @@ class Board:
                 Queen(1, 3, 0, True),
                 Queen(1, 3, 7, False),
                 King(1, 4, 0, True),
-                King(1, 4, 7, False)
+                King(1, 4, 7, False),
+                Pawn(1, 0, 1, True),
+                Pawn(2, 1, 1, True),
+                Pawn(3, 2, 1, True),
+                Pawn(4, 3, 1, True),
+                Pawn(5, 4, 1, True),
+                Pawn(6, 5, 1, True),
+                Pawn(7, 6, 1, True),
+                Pawn(8, 7, 1, True),
+                Pawn(1, 0, 6, False),
+                Pawn(2, 1, 6, False),
+                Pawn(3, 2, 6, False),
+                Pawn(4, 3, 6, False),
+                Pawn(5, 4, 6, False),
+                Pawn(6, 5, 6, False),
+                Pawn(7, 6, 6, False),
+                Pawn(8, 7, 6, False)
             ]
         else:
             self.Pieces = pieces
@@ -382,6 +451,9 @@ class Board:
 
     def move_white_rook_1(self, pos):
         self.move_piece(Rook, True, 1, pos)
+
+    def move_white_pawn_1(self, pos):
+        self.move_piece(Pawn, True, 1, pos)
 
     def move_black_rook_1(self, pos):
         self.move_piece(Rook, False, 1, pos)

@@ -36,6 +36,18 @@ class MoveCausesYourKingToBeInCheckError(Exception):
             "The given move would cause your king to be in check."
 
 
+class PawnMayOnlyMoveLikeAPawnError(Exception):
+    def __init__(self):
+        self.message = \
+            "The given move was not valid for a pawn, they can only move forward or diag one square."
+
+
+class DiagonalPawnMoveMustBeACaptureError(Exception):
+    def __init__(self):
+        self.message = \
+            "The given move was not valid for a pawn, they can only move forward or diag one square."
+
+
 class MoveBlockedByPieceError(Exception):
     def __init__(self):
         self.message = "The given move would be valid, but there was a piece in the way"

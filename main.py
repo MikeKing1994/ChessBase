@@ -434,6 +434,17 @@ class Board:
 
         return False
 
+    def is_black_king_in_check(self):
+        white_pieces = self.get_all_white_pieces()
+        king = self.get_black_king()
+        for p in white_pieces:
+            valid_moves_for_white = p.get_all_valid_moves(self)
+            for move in valid_moves_for_white:
+                if move == king.Position:
+                    return True
+
+        return False
+
 
 if __name__ == '__main__':
     board = Board()

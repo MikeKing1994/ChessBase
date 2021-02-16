@@ -2,12 +2,12 @@ import unittest
 from unittest import TestCase
 
 from main import (Board, Position, MoveOffBoardError, RookCanOnlyMoveInOneAxisError, MoveBlockedByPieceError, Rook,
-                  King, Knight)
+                  King, Knight, MoveCausesYourKingToBeInCheckError)
 
 
 class TestBoard(unittest.TestCase):
     def setUp(self):
-        self.Board = Board()
+        self.Board = Board(None)
 
 
 class TestInit(TestBoard):
@@ -51,7 +51,7 @@ class TestBoard(TestBoard):
 
     def test_get_all_valid_moves(self):
         rook = self.Board.get_white_rook_1()
-        moves = rook.get_all_valid_moves(self.Board)
+        moves = rook.get_all_valid_moves(False, self.Board)
         self.assertEqual([
             Position(0, 1),
             Position(0, 2),
@@ -95,12 +95,30 @@ class TestBoard(TestBoard):
         self.assertEqual(True, king.is_white())
 
     def test_is_white_king_in_check_returns_false(self):
-        new_board = Board()
+        new_board = Board(None)
         new_board.move_black_rook_1(Position(0, 5))
         self.assertEqual(False, new_board.is_white_king_in_check())
 
     def test_is_white_king_in_check_returns_true(self):
-        new_board = Board()
+        new_board = Board(None)
         new_board.move_black_rook_1(Position(0, 5))
         new_board.move_black_rook_1(Position(4, 5))
         self.assertEqual(True, new_board.is_white_king_in_check())
+
+    def test_would_cause_king_to_be_in_check_throws_exception(self):
+        with self.assertRaises(MoveCausesYourKingToBeInCheckError):
+            new_board = Board(None)
+            new_board.move_white_rook_1(Position(0, 1))
+            new_board.move_black_rook_1(Position(0, 6))
+            new_board.move_white_rook_1(Position(4, 1))
+            new_board.move_black_rook_1(Position(4, 6))
+            new_board.move_white_rook_1(Position(5, 1))
+
+    def test_would_cause_king_to_be_in_check_does_not_throw_exception(self):
+        new_board = Board(None)
+        new_board.move_white_rook_1(Position(0, 1))
+        new_board.move_black_rook_1(Position(0, 6))
+        new_board.move_white_rook_1(Position(4, 1))
+        new_board.move_black_rook_1(Position(4, 6))
+        new_board.move_white_rook_1(Position(4, 2))
+

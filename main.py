@@ -1,6 +1,7 @@
 from exceptions import *
 import copy
 
+
 class Position:
     X: int
     Y: int
@@ -34,34 +35,6 @@ def check_capture_own_piece_error(b, is_white, pos):
         raise CannotCaptureOwnPieceError()
 
 
-class MoveOffBoardError(Exception):
-    def __init__(self):
-        self.message = "The given move was off the board x and y values should be between 0 and 8"
-
-
-class RookCanOnlyMoveInOneAxisError(Exception):
-    def __init__(self):
-        self.message = "The given move was not valid for a rook, they can only move in one axis"
-
-
-class BishopMayOnlyMoveDiagonallyException(Exception):
-    def __init__(self):
-        self.message = "The given move was not valid for a bishop, they can only move diagonally"
-
-
-class MoveBlockedByPieceError(Exception):
-    def __init__(self):
-        self.message = "The given move would be valid, but there was a piece in the way"
-
-
-class MoveWentNowhereError(Exception):
-    def __init__(self):
-        self.message = "The given move didn't go anywhere"
-
-
-class CannotCaptureOwnPieceError(Exception):
-    def __init__(self):
-        self.message = "The given move would capture it's own piece"
 def check_causes_king_to_be_in_check_error(b, is_white, piece_type, identifier, pos):
     temp_board = copy.deepcopy(b)
     temp_board.dangerously_move_piece_with_no_validity_checks(piece_type, is_white, identifier, pos)
@@ -95,7 +68,7 @@ class Piece:
         else:
             print("move invalid, could not move to", pos.X, pos.Y)
 
-    def is_move_valid(self, b, pos):
+    def is_move_valid(self, ignore_king_check, b, pos):
         raise Exception("must be implemented by each piece that inherits")
 
     def get_all_valid_moves(self, ignore_king_check, b):
@@ -343,7 +316,7 @@ class Bishop(Piece):
         self.Taken = False
         self.IsWhite = is_white
 
-    def is_move_valid(self, b, pos):
+    def is_move_valid(self, ignore_king_check, b, pos):
         check_move_off_board_error(pos)
         check_move_went_nowhere_error(self.Position, pos)
 
@@ -351,7 +324,7 @@ class Bishop(Piece):
         delta_y = pos.Y - self.Position.Y
 
         if abs(delta_x) != abs(delta_y):
-            raise BishopMayOnlyMoveDiagonallyException()
+            raise BishopMayOnlyMoveDiagonallyError()
 
         if delta_x > 0 and delta_y > 0:
             squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(delta_x)]
@@ -364,15 +337,10 @@ class Bishop(Piece):
 
         check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
         check_capture_own_piece_error(b, self.is_white(), pos)
+        if not ignore_king_check:
+            check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)
 
         return True
-
-    def move(self, b, pos):
-        if self.is_move_valid(b, pos):
-            print("move was valid, moving to", pos.X, pos.Y)
-            self.move_internal(pos)
-        else:
-            print("move invalid, could not move to", pos.X, pos.Y)
 
 
 class Rook(Piece):

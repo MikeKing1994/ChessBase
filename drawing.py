@@ -22,4 +22,14 @@ def draw_board():
             colour = "white" if is_white else "black"
             draw.rectangle((100 * x, 100 * y, (100 * x) + 100, (100 * y) + 100), fill=colour, outline=(255, 255, 255))
 
+            if x == 4 and y == 0:
+                white_king = Image.open('WhiteKing4.png').resize((100, 100))
+
+                im.paste(white_king, (400, 700))
+
+            if x == 5 and y == 0:
+                white_queen = Image.open('WhiteQueen.png').resize((100, 100))
+
+                im.paste(white_queen, (500, 700))
+
     im.show()

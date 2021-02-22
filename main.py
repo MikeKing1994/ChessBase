@@ -1,6 +1,10 @@
 from exceptions import *
 import copy
-from drawing import draw_square, draw_board
+from PIL import Image, ImageDraw
+
+
+def position_to_coordinate(pos):
+    return 100 * pos.X, 700 - (100 * pos.Y)
 
 
 class Position:
@@ -543,10 +547,42 @@ class Board:
             print(rank)
 
     def pretty_print(self):
+        im = Image.new('RGB', (900, 900), (128, 128, 128))
+        draw = ImageDraw.Draw(im)
         for y in range(7, -1, -1):
             for x in range(0, 8):
-                is_white = ((x + y) % 2 == 1)
-                draw_square(is_white)
+                is_white = ((x + y) % 2 == 0)
+                colour = (235, 125, 52) if is_white else (245, 231, 159)
+                draw.rectangle((100 * x, 100 * y, (100 * x) + 100, (100 * y) + 100), fill=colour,
+                               outline=(255, 255, 255))
+
+                pos = Position(x, y)
+                p = self.try_get_piece_on_square(pos)
+
+                if isinstance(p, King):
+                    white_king = Image.open('WhiteKing.png').resize((100, 100))
+                    im.paste(white_king, position_to_coordinate(pos), white_king)
+
+                if isinstance(p, Queen):
+                    white_queen = Image.open('WhiteQueen.png').resize((100, 100))
+                    im.paste(white_queen, position_to_coordinate(pos), white_queen)
+
+                if isinstance(p, Rook):
+                    white_rook = Image.open('WhiteRook.png').resize((100, 100))
+                    im.paste(white_rook, position_to_coordinate(pos), white_rook)
+
+                if isinstance(p, Bishop):
+                    white_bishop = Image.open('WhiteBishop.png').resize((100, 100))
+                    im.paste(white_bishop, position_to_coordinate(pos), white_bishop)
+
+                if isinstance(p, Knight):
+                    white_knight = Image.open('WhiteKnight.png').resize((100, 100))
+                    im.paste(white_knight, position_to_coordinate(pos), white_knight)
+
+                if isinstance(p, Pawn):
+                    white_pawn = Image.open('WhitePawn.png').resize((100, 100))
+                    im.paste(white_pawn, position_to_coordinate(pos), white_pawn)
+        im.show()
 
     def is_white_king_in_check(self):
         black_pieces = self.get_all_black_pieces()
@@ -573,7 +609,7 @@ class Board:
 
 if __name__ == '__main__':
     board = Board(None)
-    board.print()
-    draw_board()
+    board.move_white_pawn_1(Position(0, 3))
+    board.pretty_print()
 
     ()

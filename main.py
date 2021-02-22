@@ -1,5 +1,6 @@
 from exceptions import *
 import copy
+from drawing import draw_square, draw_board
 
 
 class Position:
@@ -541,6 +542,12 @@ class Board:
 
             print(rank)
 
+    def pretty_print(self):
+        for y in range(7, -1, -1):
+            for x in range(0, 8):
+                is_white = ((x + y) % 2 == 1)
+                draw_square(is_white)
+
     def is_white_king_in_check(self):
         black_pieces = self.get_all_black_pieces()
         king = self.get_white_king()
@@ -567,4 +574,6 @@ class Board:
 if __name__ == '__main__':
     board = Board(None)
     board.print()
+    draw_board()
+
     ()

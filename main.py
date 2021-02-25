@@ -90,6 +90,7 @@ class Piece:
         else:
             print("move invalid, could not move to", pos.X, pos.Y)
 
+    # hack should not use this inheritance trick, should define an interface
     def is_move_valid(self, ignore_king_check, b, pos):
         raise Exception("must be implemented by each piece that inherits")
 

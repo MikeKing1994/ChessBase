@@ -7,6 +7,10 @@ def position_to_coordinate(pos):
     return 100 * pos.X, 700 - (100 * pos.Y)
 
 
+def flatten(t): \
+    return [item for sublist in t for item in sublist]
+
+
 class Position:
     X: int
     Y: int
@@ -17,6 +21,18 @@ class Position:
 
     def __eq__(self, other):
         return self.X == other.X and self.Y == other.Y
+
+
+class Move:
+    From: Position
+    To: Position
+
+    def __init__(self, f, to):
+        self.From = f
+        self.To = to
+
+    def __eq__(self, other):
+        return self.From == other.From and self.To == other.To
 
 
 def check_move_off_board_error(pos):
@@ -31,6 +47,7 @@ def check_move_went_nowhere_error(old_pos, new_pos):
 
 def check_move_blocked_by_other_pieces(b, squares_that_must_be_empty):
     for square in squares_that_must_be_empty:
+        # hack this needs to check if the piece on the square is the same colour
         if not b.is_square_empty(square):
             raise MoveBlockedByPieceError()
 
@@ -83,7 +100,7 @@ class Piece:
                 pos = Position(x, y)
                 try:
                     if self.is_move_valid(ignore_king_check, b, pos):
-                        valid_moves.append(pos)
+                        valid_moves.append(Move(self.Position, pos))
                 except MoveOffBoardError:
                     pass
                     # print("tried a move, but it wasn't on the board")
@@ -149,41 +166,7 @@ class Knight(Piece):
             raise KnightMayOnlyMoveLikeAKnightError()
 
         if not ignore_king_check:
-            check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)
-
-        return True
-
-
-class Bishop(Piece):
-    def __init__(self, id, x, y, is_white):
-        self.Id = id
-        self.Position = Position(x, y)
-        self.Taken = False
-        self.IsWhite = is_white
-
-    def is_move_valid(self, ignore_king_check, b, pos):
-        check_move_off_board_error(pos)
-        check_move_went_nowhere_error(self.Position, pos)
-
-        delta_x = pos.X - self.Position.X
-        delta_y = pos.Y - self.Position.Y
-
-        if abs(delta_x) != abs(delta_y):
-            raise BishopMayOnlyMoveDiagonallyError()
-
-        if delta_x > 0 and delta_y > 0:
-            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(delta_x)]
-        if delta_x < 0 and delta_y < 0:
-            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
-        if delta_x > 0 > delta_y:
-            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y - d) for d in range(delta_x)]
-        if delta_x < 0 < delta_y:
-            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
-
-        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
-        check_capture_own_piece_error(b, self.is_white(), pos)
-        if not ignore_king_check:
-            check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)
+            check_causes_king_to_be_in_check_error(b, self.IsWhite, Knight, self.Id, pos)
 
         return True
 
@@ -235,7 +218,7 @@ class Queen(Piece):
 
         check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
         if not ignore_king_check:
-            check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)
+            check_causes_king_to_be_in_check_error(b, self.IsWhite, Queen, self.Id, pos)
 
         return True
 
@@ -257,12 +240,13 @@ class King(Piece):
 
         move_valid = False
 
-        if abs(delta_x) == (1 or 0) and abs(delta_y) == (1 or 0):
+        if (abs(delta_x) in [1, 0]) and (abs(delta_y) in [1, 0]):
+            check_move_blocked_by_other_pieces(b, [pos])
             move_valid = True
         if not move_valid:
             raise KingMayOnlyMoveLikeAKingError()
         if not ignore_king_check:
-            check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)
+            check_causes_king_to_be_in_check_error(b, self.IsWhite, King, self.Id, pos)
 
         return True
 
@@ -301,15 +285,25 @@ class Pawn(Piece):
                 raise DiagonalPawnMoveMustBeACaptureError()
             move_valid = True
 
-        # Can move two squares forward from it's starting position
-        if delta_y == 2 and self.Position.Y in [1, 6]:
+        # Can move two squares forward from it's starting position for white
+        if self.IsWhite and delta_y == 2 and delta_x == 0 and self.Position.Y == 1:
+            check_move_blocked_by_other_pieces(b, [
+                Position(self.Position.X, self.Position.Y + 1),
+                Position(self.Position.X, self.Position.Y + 2)])
+            move_valid = True
+
+        # Can move two squares forward from it's starting position for black
+        if (not self.IsWhite) and delta_y == -2 and delta_x == 0 and self.Position.Y == 6:
+            check_move_blocked_by_other_pieces(b, [
+                Position(self.Position.X, self.Position.Y - 1),
+                Position(self.Position.X, self.Position.Y - 2)])
             move_valid = True
 
         if not move_valid:
             raise PawnMayOnlyMoveLikeAPawnError()
 
         if not ignore_king_check:
-            check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)
+            check_causes_king_to_be_in_check_error(b, self.IsWhite, Pawn, self.Id, pos)
 
         return True
 
@@ -343,7 +337,7 @@ class Bishop(Piece):
         check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
         check_capture_own_piece_error(b, self.is_white(), pos)
         if not ignore_king_check:
-            check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)
+            check_causes_king_to_be_in_check_error(b, self.IsWhite, Bishop, self.Id, pos)
 
         return True
 
@@ -590,7 +584,7 @@ class Board:
         for p in black_pieces:
             valid_moves_for_black = p.get_all_valid_moves(True, self)
             for move in valid_moves_for_black:
-                if move == king.Position:
+                if move.To == king.Position:
                     return True
 
         return False
@@ -601,10 +595,22 @@ class Board:
         for p in white_pieces:
             valid_moves_for_white = p.get_all_valid_moves(True, self)
             for move in valid_moves_for_white:
-                if move == king.Position:
+                if move.To == king.Position:
                     return True
 
         return False
+
+    def get_all_moves_for_white(self):
+        moves = []
+        white_pieces = self.get_all_white_pieces()
+        for piece in white_pieces:
+            moves.append(piece.get_all_valid_moves(False, self))
+        return flatten(moves)
+
+    def is_white_king_checkmated(self):
+        if not self.is_white_king_in_check():
+            return False
+        # not finished
 
 
 if __name__ == '__main__':

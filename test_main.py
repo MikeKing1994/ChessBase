@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from main import (Board, Position, MoveOffBoardError, RookCanOnlyMoveInOneAxisError, MoveBlockedByPieceError, Rook,
                   King, Knight, MoveCausesYourKingToBeInCheckError, Pawn, DiagonalPawnMoveMustBeACaptureError,
-                  CannotCaptureOwnPieceError)
+                  CannotCaptureOwnPieceError, Move)
 
 
 class TestBoard(unittest.TestCase):
@@ -79,9 +79,9 @@ class TestBoard(TestBoard):
         rook = new_board.get_white_rook_1()
         moves = rook.get_all_valid_moves(False, new_board)
         self.assertEqual([
-            Position(1, 0),
-            Position(2, 0),
-            Position(3, 0),
+            Move(Position(0, 0), Position(1, 0)),
+            Move(Position(0, 0), Position(2, 0)),
+            Move(Position(0, 0), Position(3, 0))
         ], moves)
 
     def test_does_square_contain_same_colour_piece_returns_true(self):
@@ -190,3 +190,53 @@ class TestBoard(TestBoard):
                 King(1, 4, 0, True)
             ])
             new_board.move_white_pawn_1(Position(5, 5))
+
+    def test_get_all_moves_for_white(self):
+        pawn = Pawn(1, 0, 1, True)
+        king = King(1, 4, 0, True)
+        new_board = Board([
+            pawn,
+            king
+        ])
+        all_valid_moves = new_board.get_all_moves_for_white()
+        expected = [
+                Move(Position(0, 1), Position(0, 2)),
+                Move(Position(0, 1), Position(0, 3)),
+                Move(Position(4, 0), Position(3, 0)),
+                Move(Position(4, 0), Position(3, 1)),
+                Move(Position(4, 0), Position(4, 1)),
+                Move(Position(4, 0), Position(5, 0)),
+                Move(Position(4, 0), Position(5, 1))
+            ]
+        self.assertEqual(expected, all_valid_moves)
+
+    def test_get_all_moves_for_pawn(self):
+        pawn = Pawn(1, 0, 1, True)
+        king = King(1, 4, 0, True)
+        new_board = Board([
+            pawn,
+            king
+        ])
+        all_valid_moves = pawn.get_all_valid_moves(False, new_board)
+        expected = [
+            Move(Position(0, 1), Position(0, 2)),
+            Move(Position(0, 1), Position(0, 3))
+        ]
+        self.assertEqual(expected, all_valid_moves)
+
+    def test_get_all_moves_for_king(self):
+        pawn = Pawn(1, 0, 1, True)
+        king = King(1, 4, 0, True)
+        new_board = Board([
+            pawn,
+            king
+        ])
+        all_valid_moves = king.get_all_valid_moves(False, new_board)
+        expected = [
+            Move(Position(4, 0), Position(3, 0)),
+            Move(Position(4, 0), Position(3, 1)),
+            Move(Position(4, 0), Position(4, 1)),
+            Move(Position(4, 0), Position(5, 0)),
+            Move(Position(4, 0), Position(5, 1))
+        ]
+        self.assertEqual(expected, all_valid_moves)

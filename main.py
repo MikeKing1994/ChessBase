@@ -1,6 +1,8 @@
 from exceptions import *
 import copy
 from PIL import Image, ImageDraw
+import asyncio
+from puppeteer import go_to_chess_dot_com
 
 
 def position_to_coordinate(pos):
@@ -615,8 +617,5 @@ class Board:
 
 
 if __name__ == '__main__':
-    board = Board(None)
-    board.move_white_pawn_1(Position(0, 3))
-    board.pretty_print()
-
+    go_to_chess_dot_com()
     ()

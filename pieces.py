@@ -58,13 +58,13 @@ class Queen(Piece):
             raise QueenMayOnlyMoveLikeAQueenError()
 
         if delta_x > 0 and delta_y > 0:  # diagonally up right
-            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(delta_x)]
+            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(1, abs(delta_x))]
         if delta_x < 0 and delta_y < 0:  # diagonally left down
-            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
+            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(1, abs(delta_x))]
         if delta_x > 0 > delta_y:  # diagonally down right
-            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y - d) for d in range(delta_x)]
+            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y - d) for d in range(1, abs(delta_x))]
         if delta_x < 0 < delta_y:  # diagonally down left
-            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
+            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y + d) for d in range(1, abs(delta_x))]
         if delta_x == 0 and delta_y > 0:  # vertically up
             squares_that_must_be_empty = [Position(pos.X, axis_val) for axis_val in
                                           range(self.Position.Y + 1, pos.Y, 1)]
@@ -188,13 +188,13 @@ class Bishop(Piece):
             raise BishopMayOnlyMoveDiagonallyError()
 
         if delta_x > 0 and delta_y > 0:
-            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(delta_x)]
+            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y + d) for d in range(1, abs(delta_x))]
         if delta_x < 0 and delta_y < 0:
-            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
+            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(1, abs(delta_x))]
         if delta_x > 0 > delta_y:
-            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y - d) for d in range(delta_x)]
+            squares_that_must_be_empty = [Position(self.Position.X + d, self.Position.Y - d) for d in range(1, abs(delta_x))]
         if delta_x < 0 < delta_y:
-            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y - d) for d in range(delta_x)]
+            squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y + d) for d in range(1, abs(delta_x))]
 
         check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
         check_capture_own_piece_error(b, self.is_white(), pos)

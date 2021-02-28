@@ -7,6 +7,7 @@ from selenium.webdriver import ActionChains
 from shared import Position
 from pieces import King, Queen, Bishop, Knight, Rook, Pawn
 from board import Board
+from exceptions import ChessDotComWillNotAllowMove
 
 
 def get_chess_dot_com_square_name_from_position(pos):
@@ -16,10 +17,17 @@ def get_chess_dot_com_square_name_from_position(pos):
 
 
 def _move_piece_internal(driver, action_chains, move_from_class, move_to_class):
-    move_from = driver.find_element_by_class_name(move_from_class)
+    move_from = driver.find_elements_by_class_name(move_from_class)
+    if not move_from:
+        raise ChessDotComWillNotAllowMove(move_from_class, move_to_class)
+    move_from = move_from[0]
     move_from.click()
 
-    move_to = driver.find_element_by_class_name(move_to_class)
+    move_to = driver.find_elements_by_class_name(move_to_class)
+    if not move_to:
+        raise ChessDotComWillNotAllowMove(move_from_class, move_to_class)
+    move_to = move_to[0]
+
     action_chains.drag_and_drop(move_from, move_to).perform()
 
 

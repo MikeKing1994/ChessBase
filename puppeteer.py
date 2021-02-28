@@ -8,6 +8,7 @@ from shared import Position
 from pieces import King, Queen, Bishop, Knight, Rook, Pawn
 from board import Board
 from exceptions import ChessDotComWillNotAllowMove
+import time
 
 
 def get_chess_dot_com_square_name_from_position(pos):
@@ -96,6 +97,17 @@ def read_board(driver):
                 board_accumulator.Pieces.append(piece)
 
     return board_accumulator
+
+
+def get_board_only_after_opponent_plays(driver, previous_board):
+    keep_checking = True
+    while keep_checking:
+        time.sleep(0.5)
+        current_board = read_board(driver)
+        if not current_board == previous_board:
+            keep_checking = False
+
+    return current_board
 
 
 def start_game_against_jimmy_on_chess_dot_com():

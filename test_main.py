@@ -240,3 +240,41 @@ class TestBoard(TestBoard):
             Move(Position(4, 0), Position(5, 1))
         ]
         self.assertEqual(expected, all_valid_moves)
+
+    def test_piece_equality_returns_true(self):
+        a = Rook(1, 1, 1, True)
+        b = Rook(1, 1, 1, True)
+        self.assertTrue(a == b)
+
+    def test_piece_equality_returns_false(self):
+        a = Rook(1, 1, 1, True)
+        b = Rook(2, 1, 1, True)
+        self.assertFalse(a == b)
+
+    def test_board_equality_returns_true(self):
+        pawn_a = Pawn(1, 0, 1, True)
+        pawn_b = Pawn(1, 0, 2, True)
+        king = King(1, 4, 0, True)
+        board_a = Board([
+            pawn_a,
+            king
+        ])
+        board_b = Board([
+            pawn_a,
+            king
+        ])
+        self.assertTrue(board_a == board_b)
+
+    def test_board_equality_returns_false(self):
+        pawn_a = Pawn(1, 0, 1, True)
+        pawn_b = Pawn(1, 0, 2, True)
+        king = King(1, 4, 0, True)
+        board_a = Board([
+            pawn_a,
+            king
+        ])
+        board_b = Board([
+            pawn_b,
+            king
+        ])
+        self.assertFalse(board_a == board_b)

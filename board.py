@@ -43,6 +43,14 @@ class Board:
         else:
             self.Pieces = pieces
 
+    def __eq__(self, other):
+        all_pieces_have_an_equal = True
+        for piece in self.Pieces:
+            if piece not in other.Pieces:
+                all_pieces_have_an_equal = False
+
+        return all_pieces_have_an_equal
+
     def copy(self):
         return Board(self.Pieces)
 

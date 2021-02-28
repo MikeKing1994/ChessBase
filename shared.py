@@ -27,9 +27,13 @@ class Move:
 
 
 class Piece:
+    Id: int
     IsWhite: bool
     Position: Position
     Taken: bool
+
+    def __eq__(self, other):
+        return (other.IsWhite == self.IsWhite) and (other.Position == self.Position) and (other.Id == self.Id) and (other.Taken == self.Taken)
 
     def move_internal(self, pos):
         self.Position = pos

@@ -223,7 +223,7 @@ class Board:
         white_pieces = self.get_all_white_pieces()
         king = self.get_black_king()
         for p in white_pieces:
-            valid_moves_for_white = p.get_all_valid_moves(True, self)
+            valid_moves_for_white = p.get_all_valid_moves(False, self)
             for move in valid_moves_for_white:
                 if move.To == king.Position:
                     return True

@@ -22,8 +22,7 @@ class RandomGameBot:
         if all_valid_moves:
             first_move = random.choice(all_valid_moves)
             move_piece_on_chess_dot_com(game_driver, first_move.From, first_move.To)
-        time.sleep(2.4)
-        # get_board_only_after_opponent_plays(game_driver, self.board)
+        get_board_only_after_opponent_plays(game_driver, self.board)
 
     def play(self):
         game_driver = start_game_against_jimmy_on_chess_dot_com()

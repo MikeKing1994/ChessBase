@@ -1,9 +1,9 @@
 import unittest
 from unittest import TestCase
 
-from main import (Board, Position, MoveOffBoardError, RookCanOnlyMoveInOneAxisError, MoveBlockedByPieceError, Rook,
-                  King, Knight, MoveCausesYourKingToBeInCheckError, Pawn, DiagonalPawnMoveMustBeACaptureError,
-                  CannotCaptureOwnPieceError, Move)
+from shared import *
+from board import *
+from pieces import *
 
 
 class TestBoard(unittest.TestCase):
@@ -278,3 +278,23 @@ class TestBoard(TestBoard):
             king
         ])
         self.assertFalse(board_a == board_b)
+
+    def test_if_king_is_in_check_then_must_break_check(self):
+        pawn = Pawn(1, 0, 1, True)
+        king = King(1, 4, 0, True)
+        black_bishop = Bishop(1, 5, 1, False)
+        new_board = Board([
+            pawn,
+            king,
+            black_bishop
+        ])
+        self.assertTrue(new_board.is_white_king_in_check())
+        all_valid_moves = new_board.get_all_moves_for_white()
+        expected = [
+            Move(Position(4, 0), Position(3, 0)),
+            Move(Position(4, 0), Position(3, 1)),
+            Move(Position(4, 0), Position(4, 1)),
+            Move(Position(4, 0), Position(5, 0)),
+            Move(Position(4, 0), Position(5, 1))
+        ]
+        self.assertEqual(expected, all_valid_moves)

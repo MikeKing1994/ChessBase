@@ -89,6 +89,7 @@ def read_piece_on_square(driver, pos):
 
 def read_board(driver):
     board_accumulator = Board([])
+    # maybe add a check here that the number of taken pieces, plus the number of pieces found should be 32
     for x in range(8):
         for y in range(8):
             pos = Position(x, y)
@@ -102,7 +103,7 @@ def read_board(driver):
 def get_board_only_after_opponent_plays(driver, previous_board):
     keep_checking = True
     while keep_checking:
-        time.sleep(0.5)
+        time.sleep(2)
         current_board = read_board(driver)
         if not current_board == previous_board:
             keep_checking = False

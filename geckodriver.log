@@ -1363,8 +1363,11 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614527602981	Marionette	INFO	Listening on port 57197
 1614527603095	Marionette	WARN	TLS certificate errors will be ignored for this session
-1614527642578	geckodriver	INFO	Listening on 127.0.0.1:57327
-1614527645651	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofile7aLYeI"
+1614534593861	Marionette	INFO	Stopped listening on port 57197
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+"--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofile7aLYeI"
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614527647730	Marionette	INFO	Listening on port 57336
 1614527647801	Marionette	WARN	TLS certificate errors will be ignored for this session
@@ -1386,8 +1389,50 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614533097958	Marionette	INFO	Listening on port 59886
 1614533098427	Marionette	WARN	TLS certificate errors will be ignored for this session
-1614533493506	geckodriver	INFO	Listening on 127.0.0.1:60200
-1614533496579	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileKYerNe"
+1614534593922	Marionette	INFO	Stopped listening on port 59886
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+"--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileKYerNe"
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614533498622	Marionette	INFO	Listening on port 60209
 1614533498652	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614534593815	Marionette	INFO	Stopped listening on port 60209
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+"--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileaMHTJX"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614534372264	Marionette	INFO	Listening on port 60787
+1614534372368	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614534414677	geckodriver	INFO	Listening on 127.0.0.1:60916
+1614534417758	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofilehhPvzp"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614534419957	Marionette	INFO	Listening on port 60926
+1614534420409	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614534611837	geckodriver	INFO	Listening on 127.0.0.1:61105
+1614534614922	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileIFlZVP"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614534616973	Marionette	INFO	Listening on port 61114
+1614534617064	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614534633515	geckodriver	INFO	Listening on 127.0.0.1:61220
+1614534636599	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofilezPw796"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614534638698	Marionette	INFO	Listening on port 61229
+1614534638762	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://googleads.g.doubleclick.net/dbm/ad?dbm_c=AKAmf-AJA495driMpeB76Xk62Ui9h7UhHNQJ9US6pBZZr1YZFdlZTGJznEzxCu4otFeZNxjfKysJU8_0ZOUv6OfUkxD-6WBhmmLdEA2QLghCRCDUKkADzPbkeRyS-TeKIkw6scDZFiU1t4bmSmJSsM5nQw2wp778yQ&dbm_d=AKAmf-DJAOnzSmj_umCdHLGF6_tHrOT6t-lw5y8LHDLHmNjtks2Edh_WPq3CVVDI_qFHWAoNaB2c1zAY7IPyUWKp8APm7K0fn9LtN7sqr8AlR5EFP55aee-nxLiVR_QKzv3lYve7mk7qC0d8QaYLI9J2nPmm4yYjOxacXXhYPQwXlKqzIC-LgqQ0PKPTUyUokRyLuALk6fBFERsdJUDL9p9ai3VSSrgrQb2HiVCG5H_3XDnYV6MywXH88NpOlBNclxj5zRX1cJ14NG0mrMgEkLNyrsNlLRszvUYyjMKvHtspi_IRmkNvTxzcRILnN4VqIgb08kBXFQsuXgfT1Tp-32-YLbOxIM27tLil4TkFrSQ0iRX1soleaQI7s4IyVnpluATp7lWCxmZubpwYzZwodk6cDFm1ReQzzfCy9XFElwibCIBHKfm8Jcq2GyzQw6aFz8JOiq4FUEl_Kjm1FGqXlYUjIfQOIWvtjY2ajOrfBHM1V1q5AxAdtjGHZDq3fDxlpGpJbUxkEFtqa5duQ9xQNQLr2aSr_pVO4pIZElqTbnMbXWSKiaQ9gFhDR2E5SO2dxwJk89sG6YdLZzIH450l3L7gPa8NEBEXUrzaQK3M4nmsBJV9Y2JArhPfk5JCXmK4kKfV3_DpYdMMRLXhqKaydWcgmq40k-lbQVp-ZQTAioK9C3XDRLnt18RxhS9KVfYJseeWmoSXB8_N55b2uiXFMdrvFJie7gVpf2PBRNl53dt2_co0sW4gMATciWxIfCukr5-ihNk6HhSJIlPDorvRSeZXapTa69eXG07a4gBvIuJ93Muycuwg3m7bTvwMcN_tCUkqUI0XHVb62BVXf9Wdjq0UoF8LZsIqS7GFtG1XrkEgwbcp-Orq1rJUjHlHcI1S11heLPZu9vIchKmu9nasifQgH9r-bwErMEvu18NI-8aTA3EJEzqKNJI9aLJ-lfUV9KornphW7LRnuRKmru7160jVd5QajtJNWKAWpyvK2B0qBRqbfQgbsHvR8plrpYoPe4K8hMnSRMt9hJukBLVIe_Ahnv9MMUpsl4YTThNwzqWq681FUXE5IYZIQjwJLjApDC6BR1N-bE9PGOOt7jtwAoilOI0NGHLooLFrMW4ssGJvTB9sWIDxOOWdsABfWihvJUalQONTBzya5VcjPNsu6BremzTyBuxzaw6VmoTLAE3_ZwUijEmES7asaTMNJ6fuHAdcVEr0gCRgVjvpwZAt-r04Zu71dQt-U1Ad2ccvxv88rvBsvsCLjVAaFyT6njPMZf-zI_ZmoE5g9jJDxnkofjhAHx5E5--h2O8VNNrBm5tzIJIGgyxMUnqlP-x4FLStz32Eioion3t-65jBSeo0cSgJ5Pis-Rh8WVcoJNfYMKgkx0LN7buev4LGmIkrTwt_6rPoBslYxKHR-AyI2CTtLN6oM7qmwUI2hO5hOM4syBuRkQNc0GzRRpR4EUrBSLOEHnotS08bZ-2MEwApJKQ1HpOeltupQURtqgk8HtXEOOmhJV3GvFrRqs-9cN-56EhsL5KNCsWs0oJ9BLY--qu_xaq6xWxqWnUYjaPDaz6CqOVbLRg6Ppdq-8lbsFTuPjF-AZdnD5I70gz3Te4FuNoGFslCORshQsZqcnYcXJhEWlXSqSVy7NV-_MfZQNgIb7YG6379mHU-WH-s_-66hCI7xuOfR3MEJ9heY1x13rBK35VVtn27_nfpkgb09BE33PX71CtfApVdfGBuUuMjJmAS-KTnAo9D2CW62sP-zsUn1ig_EHdaDhvhK1g0ORS226p4_jsTLFFERq-OJxkV-I7tprlo6G1VbX28gXiJNJav1kWeaFjdOWlvaMBF8t_LoSXjItQJkLwWrwQ8AWYRgjV0_Mh8udAihnLBSB3sNvXV6xA1plqvHxL0ssYwzCKpYo_DTa81MSQ3YwM7XbHlTK3PFxbrP-IuoVrNbYJ3m6LmUmoBjjXmW3UoYKh5RsRTTIklHkBjIGNQ5qsOowhsTxB9E3P6Kah8d6vUgzAcX2JY83EAcC1Ltap1K0ZBzw4uB1iA-dCCujNTMn0gkENAnrAT0avhIKic2y9arXX2kzZWFSDUdt4LZk2TWToJUNUJbVHu93O3WN4IXbIwT-_AhZ4MoSg9ZbFUxI2zx0Umm0kCYWu9jSch2Q5CZ99tvhfGqK859ZBxLCiKBaSypOZgQTremjFqE7te6f90frCh4xQuRhHGkAinqtoeEd9RGHO8ZZbyuV_EcIv_fzOlK5m824U-0aOe8erks1WFKkorppCS7q8KFRUXt7k-mqMZl5aBDO823NRb2k3WKeoxuG6GmPTMgoo14fJ7QJu8YeswtRG4eeczrscV_ICvXM1G-qCy6WqC27RPcecFKVsHIIeVq1PBzyMC-S1QzDFVeJjV6Kr8ZsbjN1sCRak52m4OIg7OhEvI6oDiRuP9U7ZgXu9zcB_H7j5W2S9-2erjN9pgAZfGrM0lnjjHItQZOqkmur8tC5518gIQTaVyhCdxrwYtbZtGIRJqYI-zVnwqkuanzF_o1tZqxlCz8a9uoJVrXsUINXko0h08HqphVQNrmoFtekQiPgM99-TXvhVap36La5De9J0Hzn4cmuTvNaxN-PO-OOA4oxdgOKASoXnRSKu8Qx1f7HrVsbh2L736XJ7dO1EjR4Gw3t_vd2JQ_ePTnur86J5UPoTYLGVd6eFuKGLv6Lt5c-NDAwPIetU7reNYJHcXFbFas6ToQ3k4i3kdpHM-PGBkOQQBK55qZ_wp7WYxtE14mmoVYacoQmvAu-0R9MecVhWHdO6hJ7cNpLLo4Bc9G1Hr8sazdEfmWY5yicbIgt0VInoQmuQ8wI8zRcyK2PzsWjTtqMgkU4bg1KyoaRtUA2ePGs7zsb55pld6phWDlRhSFVfna77acEYfnxw1qaOxI_Wm-00LeMe-Q3rQpRkHRqpAT0ln1YncGYvikV90tdYOV3vUEeEK2tR3wvcN6f3ZO_YrG1DSBm9SiZvMva45F_XzXMGojJlAJjOeC_WfItNoDFmD-AhV_qTDcdzwbrwAKcme7pI3QxwpIFAUoX_xXtr1MZFsgcbjtg-C&cid=CAASPeRo-z3Kxi0vEhiJkt5jN1fDu-pdNRwQVnwXUy7PcpdLPVS4uuKYdagkDb-KwQBd7szsjG_tp4r0qZlvI6g&rfl=1%2Chttps%253A%252F%252Fwww.chess.com%252F%240, line 1: SyntaxError: invalid escape sequence
+1614534876358	geckodriver	INFO	Listening on 127.0.0.1:61428
+1614534879411	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileEAFfhR"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614534881443	Marionette	INFO	Listening on port 61437
+1614534881556	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614534940768	geckodriver	INFO	Listening on 127.0.0.1:61554
+1614534943858	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofile1XNDW5"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614534945844	Marionette	INFO	Listening on port 61563
+1614534945916	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614535192789	geckodriver	INFO	Listening on 127.0.0.1:61829
+1614535195856	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileHKMM9p"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614535197874	Marionette	INFO	Listening on port 61839
+1614535197989	Marionette	WARN	TLS certificate errors will be ignored for this session

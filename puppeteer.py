@@ -4,14 +4,27 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
+from shared import Position
 
 
-def move_piece(driver, action_chains, move_from_class, move_to_class):
+def get_chess_dot_com_square_name_from_position(pos):
+    x = str(pos.X + 1)
+    y = str(pos.Y + 1)
+    return f'square-{x}{y}'
+
+
+def move_piece_internal(driver, action_chains, move_from_class, move_to_class):
     move_from = driver.find_element_by_class_name(move_from_class)
     move_from.click()
 
     move_to = driver.find_element_by_class_name(move_to_class)
     action_chains.drag_and_drop(move_from, move_to).perform()
+
+
+def move_piece(driver, action_chains, from_position, to_position):
+    from_class = get_chess_dot_com_square_name_from_position(from_position)
+    to_class = get_chess_dot_com_square_name_from_position(to_position)
+    move_piece_internal(driver, action_chains, from_class, to_class)
 
 
 def wait_until_board_loaded(driver, wait):
@@ -42,7 +55,7 @@ def go_to_chess_dot_com():
     wait_until_board_loaded(driver, wait)
 
     action_chains = ActionChains(driver)
-    move_piece(driver, action_chains, "square_42", "square_44")
+    move_piece(driver, action_chains, Position(3, 1), Position(3, 3))
 
     print(choose_button)
     #driver.close()

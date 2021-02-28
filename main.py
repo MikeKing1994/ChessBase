@@ -3,6 +3,7 @@ import copy
 from PIL import Image, ImageDraw
 import asyncio
 from puppeteer import go_to_chess_dot_com
+from shared import Position, Move
 
 
 def position_to_coordinate(pos):
@@ -11,30 +12,6 @@ def position_to_coordinate(pos):
 
 def flatten(t): \
     return [item for sublist in t for item in sublist]
-
-
-class Position:
-    X: int
-    Y: int
-
-    def __init__(self, x, y):
-        self.X = x
-        self.Y = y
-
-    def __eq__(self, other):
-        return self.X == other.X and self.Y == other.Y
-
-
-class Move:
-    From: Position
-    To: Position
-
-    def __init__(self, f, to):
-        self.From = f
-        self.To = to
-
-    def __eq__(self, other):
-        return self.From == other.From and self.To == other.To
 
 
 def check_move_off_board_error(pos):

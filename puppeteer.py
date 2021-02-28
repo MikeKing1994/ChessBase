@@ -49,11 +49,16 @@ def wait_until_board_loaded(wait):
 
 def read_class_of_square(driver, pos):
     square_class_name = get_chess_dot_com_square_name_from_position(pos)
-    element = driver.find_elements_by_class_name(square_class_name)
-    if not element:
+    elements = driver.find_elements_by_class_name(square_class_name)
+    if not elements:
         return None
     else:
-        return element[0].get_attribute("class")
+        for dom_element in elements:
+            class_name = dom_element.get_attribute("class")
+            if "piece" in class_name:
+                return class_name
+
+        return None
 
 
 def read_piece_on_square(driver, pos):

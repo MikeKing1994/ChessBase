@@ -99,6 +99,9 @@ class Piece:
                 except CannotCaptureOwnPieceError:
                     pass
                     # print("tried a move, but it would have captured it's own piece")
+                except MoveCausesYourKingToBeInCheckError:
+                    pass
+                    # print("tried a move, but it would have captured it's own piece")
                 finally:
                     pass
 

@@ -17,17 +17,30 @@ def get_chess_dot_com_square_name_from_position(pos):
     return f'square-{x}{y}'
 
 
+def read_element_by_class_name(driver, target_class_name, must_contain_class):
+    elements = driver.find_elements_by_class_name(target_class_name)
+    if not elements:
+        return None
+    else:
+        for dom_element in elements:
+            class_name = dom_element.get_attribute("class")
+            if must_contain_class is None:
+                return dom_element
+            elif must_contain_class in class_name:
+                return dom_element
+
+        return None
+
+
 def _move_piece_internal(driver, action_chains, move_from_class, move_to_class):
-    move_from = driver.find_elements_by_class_name(move_from_class)
-    if not move_from:
+    move_from = read_element_by_class_name(driver, move_from_class, "piece")
+    if move_from is None:
         raise ChessDotComWillNotAllowMove(move_from_class, move_to_class)
-    move_from = move_from[0]
     move_from.click()
 
-    move_to = driver.find_elements_by_class_name(move_to_class)
-    if not move_to:
+    move_to = read_element_by_class_name(driver, move_to_class, "hint")
+    if move_to is None:
         raise ChessDotComWillNotAllowMove(move_from_class, move_to_class)
-    move_to = move_to[0]
 
     action_chains.drag_and_drop(move_from, move_to).perform()
 
@@ -47,22 +60,17 @@ def wait_until_board_loaded(wait):
     )
 
 
-def read_class_of_square(driver, pos):
+def read_class_of_square(driver, pos, must_contain_class):
     square_class_name = get_chess_dot_com_square_name_from_position(pos)
-    elements = driver.find_elements_by_class_name(square_class_name)
-    if not elements:
-        return None
-    else:
-        for dom_element in elements:
-            class_name = dom_element.get_attribute("class")
-            if "piece" in class_name:
-                return class_name
+    element = read_element_by_class_name(driver, square_class_name, must_contain_class)
+    if element is not None:
+        return element.get_attribute("class")
 
-        return None
+    return None
 
 
 def read_piece_on_square(driver, pos):
-    class_on_square = read_class_of_square(driver, pos)
+    class_on_square = read_class_of_square(driver, pos, "piece")
     if class_on_square is None:
         return None
     else:

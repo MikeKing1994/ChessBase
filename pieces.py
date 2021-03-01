@@ -78,7 +78,7 @@ class Queen(Piece):
             squares_that_must_be_empty = [Position(axis_val, pos.Y) for axis_val in
                                           range(self.Position.X + 1, pos.X, 1)]
 
-        check_move_blocked_by_other_pieces(b, True, self.is_white(), squares_that_must_be_empty)
+        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
         if not ignore_king_check:
             check_causes_king_to_be_in_check_error(b, self.IsWhite, Queen, self.Id, pos)
 
@@ -103,7 +103,7 @@ class King(Piece):
         move_valid = False
 
         if (abs(delta_x) in [1, 0]) and (abs(delta_y) in [1, 0]):
-            check_move_blocked_by_other_pieces(b, True, self.is_white(), [pos])
+            check_move_blocked_by_other_pieces(b, [pos])
             move_valid = True
         if not move_valid:
             raise KingMayOnlyMoveLikeAKingError()
@@ -132,12 +132,12 @@ class Pawn(Piece):
 
         # Normal move directly forward for white
         if self.IsWhite and delta_y == 1 and delta_x == 0:
-            check_move_blocked_by_other_pieces(b, False, self.is_white(), [pos])
+            check_move_blocked_by_other_pieces(b, [pos])
             move_valid = True
 
         # Normal move directly down for black
         if (not self.IsWhite) and delta_y == -1 and delta_x == 0:
-            check_move_blocked_by_other_pieces(b, False, self.is_white(), [pos])
+            check_move_blocked_by_other_pieces(b, [pos])
             move_valid = True
 
         # capture diagonally, must be a capture
@@ -149,14 +149,14 @@ class Pawn(Piece):
 
         # Can move two squares forward from it's starting position for white
         if self.IsWhite and delta_y == 2 and delta_x == 0 and self.Position.Y == 1:
-            check_move_blocked_by_other_pieces(b, True, self.is_white(), [
+            check_move_blocked_by_other_pieces(b, [
                 Position(self.Position.X, self.Position.Y + 1),
                 Position(self.Position.X, self.Position.Y + 2)])
             move_valid = True
 
         # Can move two squares forward from it's starting position for black
         if (not self.IsWhite) and delta_y == -2 and delta_x == 0 and self.Position.Y == 6:
-            check_move_blocked_by_other_pieces(b, True, self.is_white(), [
+            check_move_blocked_by_other_pieces(b, [
                 Position(self.Position.X, self.Position.Y - 1),
                 Position(self.Position.X, self.Position.Y - 2)])
             move_valid = True
@@ -196,7 +196,7 @@ class Bishop(Piece):
         if delta_x < 0 < delta_y:
             squares_that_must_be_empty = [Position(self.Position.X - d, self.Position.Y + d) for d in range(1, abs(delta_x))]
 
-        check_move_blocked_by_other_pieces(b, True, self.is_white(), squares_that_must_be_empty)
+        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
         check_capture_own_piece_error(b, self.is_white(), pos)
         if not ignore_king_check:
             check_causes_king_to_be_in_check_error(b, self.IsWhite, Bishop, self.Id, pos)
@@ -235,7 +235,7 @@ class Rook(Piece):
             squares_that_must_be_empty = [Position(axis_val, pos.Y) for axis_val in
                                           range(self.Position.X + 1, pos.X, 1)]
 
-        check_move_blocked_by_other_pieces(b, True, self.is_white(), squares_that_must_be_empty)
+        check_move_blocked_by_other_pieces(b, squares_that_must_be_empty)
         check_capture_own_piece_error(b, self.is_white(), pos)
         if not ignore_king_check:
             check_causes_king_to_be_in_check_error(b, self.IsWhite, Rook, self.Id, pos)

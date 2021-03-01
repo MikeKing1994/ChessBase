@@ -118,15 +118,11 @@ def check_move_went_nowhere_error(old_pos, new_pos):
         raise MoveWentNowhereError()
 
 
-# can_capture would be false in scenarios like a pawn moving directly forward
-def check_move_blocked_by_other_pieces(b, can_capture, current_piece_is_white, squares_that_must_be_empty):
+def check_move_blocked_by_other_pieces(b, squares_that_must_be_empty):
     for square in squares_that_must_be_empty:
-        piece_on_square = b.try_get_piece_on_square(square)
-        if piece_on_square is not None:
-            if piece_on_square.is_white() == current_piece_is_white:
-                raise MoveBlockedByPieceError()
-            elif not can_capture:
-                raise MoveBlockedByPieceError
+        # hack this needs to check if the piece on the square is the same colour
+        if not b.is_square_empty(square):
+            raise MoveBlockedByPieceError()
 
 
 def check_capture_own_piece_error(b, is_white, pos):

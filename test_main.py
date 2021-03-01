@@ -151,15 +151,11 @@ class TestBoard(TestBoard):
     def test_would_cause_king_to_be_in_check_does_not_throw_exception(self):
         new_board = Board(
             [
-                Rook(1, 0, 0, True),
+                Rook(1, 4, 1, True),
                 King(1, 4, 0, True),
-                Rook(1, 0, 7, False),
+                Rook(1, 4, 6, False),
                 King(1, 4, 7, False)
             ])
-        new_board.move_white_rook_1(Position(0, 1))
-        new_board.move_black_rook_1(Position(0, 6))
-        new_board.move_white_rook_1(Position(4, 1))
-        new_board.move_black_rook_1(Position(4, 6))
         new_board.move_white_rook_1(Position(4, 2))
 
     def test_pawn_can_move_forward_two_from_start(self):
@@ -298,3 +294,14 @@ class TestBoard(TestBoard):
             Move(Position(4, 0), Position(5, 1))
         ]
         self.assertEqual(expected, all_valid_moves)
+
+    def test_rook_moving_vertically_down(self):
+        rook = Rook(1, 4, 6, False)
+        new_board = Board(
+            [
+                Rook(1, 4, 1, True),
+                King(1, 4, 0, True),
+                rook,
+                King(1, 4, 7, False)
+            ])
+        self.assertFalse(rook.is_move_valid(True, new_board, Position(4, 0)))

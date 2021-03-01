@@ -1568,13 +1568,23 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614542053716	Marionette	INFO	Listening on port 52419
 1614542054216	Marionette	WARN	TLS certificate errors will be ignored for this session
-1614543948037	geckodriver	INFO	Listening on 127.0.0.1:53484
-1614543951108	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofilerNmVLl"
+1614544446873	Marionette	INFO	Stopped listening on port 52419
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+"--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofilerNmVLl"
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614543953442	Marionette	INFO	Listening on port 53493
 1614543953748	Marionette	WARN	TLS certificate errors will be ignored for this session
-1614544350409	geckodriver	INFO	Listening on 127.0.0.1:53812
-1614544353431	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileje8iSW"
+1614544444573	Marionette	INFO	Stopped listening on port 53493
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+"--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileje8iSW"
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614544356113	Marionette	INFO	Listening on port 53831
 1614544356573	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614544442026	Marionette	INFO	Stopped listening on port 53831
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+

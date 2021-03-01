@@ -1663,3 +1663,20 @@ t@resource://devtools/shared/event-emitter.js:324:18\nunmanage@resource://devtoo
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614627562816	Marionette	INFO	Listening on port 53973
 1614627562912	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614628646856	geckodriver	INFO	Listening on 127.0.0.1:55187
+1614628649940	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofile3XjaYv"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614628652013	Marionette	INFO	Listening on port 55198
+1614628652086	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614629930505	geckodriver	INFO	Listening on 127.0.0.1:56502
+1614629933533	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofilekIPW6X"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614629936041	Marionette	INFO	Listening on port 56513
+1614629936175	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614630091488	geckodriver	INFO	Listening on 127.0.0.1:56766
+1614630094551	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileXaIRvH"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614630097452	Marionette	INFO	Listening on port 56776
+1614630097693	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.chess.com/bundles/app/js/vs-personalities-beta.client.7842d444.js, line 2: TypeError: r[0] is undefined
+JavaScript error: https://www.chess.com/bundles/app/js/vs-personalities-beta.client.7842d444.js, line 2: TypeError: r[0] is undefined

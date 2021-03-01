@@ -23,16 +23,23 @@ def read_element_by_class_name(driver, target_class_name, must_contain_class):
     if not elements:
         return None
     else:
+        located_class_names = []
         for dom_element in elements:
             try:
-                class_name = dom_element.get_attribute("class")
+                located_class_names.append((dom_element, dom_element.get_attribute("class")))
             except StaleElementReferenceException:
-                class_name = None
+                pass
 
-            if must_contain_class is None:
-                return dom_element
-            elif class_name is not None and must_contain_class in class_name:
-                return dom_element
+        if not located_class_names:
+            print("couldn't find it, going back around")
+            read_element_by_class_name(driver, target_class_name, must_contain_class)
+
+        if must_contain_class is None:
+            return located_class_names[0][0]
+        else:
+            for (dom, class_name) in located_class_names:
+                if must_contain_class in class_name:
+                    return dom
 
         return None
 

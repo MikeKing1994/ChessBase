@@ -103,7 +103,7 @@ class King(Piece):
         move_valid = False
 
         if (abs(delta_x) in [1, 0]) and (abs(delta_y) in [1, 0]):
-            check_move_blocked_by_other_pieces(b, [pos])
+            # no need for a check here, because if the square has our own piece on it then we have already tested for this
             move_valid = True
         if not move_valid:
             raise KingMayOnlyMoveLikeAKingError()

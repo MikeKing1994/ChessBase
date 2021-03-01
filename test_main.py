@@ -275,6 +275,7 @@ class TestBoard(TestBoard):
         ])
         self.assertFalse(board_a == board_b)
 
+    # the point of this test is that the pawn on A2 cannot move because of the check
     def test_if_king_is_in_check_then_must_break_check(self):
         pawn = Pawn(1, 0, 1, True)
         king = King(1, 4, 0, True)
@@ -295,13 +296,37 @@ class TestBoard(TestBoard):
         ]
         self.assertEqual(expected, all_valid_moves)
 
+    def test_king_can_recapture_when_in_check_from_adjacent_piece(self):
+        king = King(1, 4, 0, True)
+        black_bishop = Bishop(1, 5, 1, False)
+        new_board = Board([
+            king,
+            black_bishop
+        ])
+        self.assertTrue(new_board.is_white_king_in_check())
+        self.assertTrue(king.is_move_valid(False, new_board, Position(5, 1)))
+
     def test_rook_moving_vertically_down(self):
-        rook = Rook(1, 4, 6, False)
-        new_board = Board(
-            [
-                Rook(1, 4, 1, True),
-                King(1, 4, 0, True),
-                rook,
-                King(1, 4, 7, False)
-            ])
-        self.assertFalse(rook.is_move_valid(True, new_board, Position(4, 0)))
+        with self.assertRaises(MoveBlockedByPieceError):
+            rook = Rook(1, 4, 6, False)
+            new_board = Board(
+                [
+                    Rook(1, 4, 1, True),
+                    King(1, 4, 0, True),
+                    rook,
+                    King(1, 4, 7, False)
+                ])
+            self.assertFalse(rook.is_move_valid(True, new_board, Position(4, 0)))
+
+    def test_pawn_moving_forward_cannot_move_into_a_piece_of_opposite_colour(self):
+        with self.assertRaises(MoveBlockedByPieceError):
+            pawn = Pawn(1, 2, 2, True)
+            new_board = Board(
+                [
+                    Rook(1, 2, 3, False),
+                    King(1, 4, 0, True),
+                    pawn,
+                    King(1, 4, 7, False)
+                ])
+            # point being it cannot go there as it would have to capture the rook, which it cannot
+            self.assertFalse(pawn.is_move_valid(False, new_board, Position(2, 3)))

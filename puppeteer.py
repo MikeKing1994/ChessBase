@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
+from selenium.common.exceptions import StaleElementReferenceException
 from shared import Position
 from pieces import King, Queen, Bishop, Knight, Rook, Pawn
 from board import Board
@@ -23,10 +24,14 @@ def read_element_by_class_name(driver, target_class_name, must_contain_class):
         return None
     else:
         for dom_element in elements:
-            class_name = dom_element.get_attribute("class")
+            try:
+                class_name = dom_element.get_attribute("class")
+            except StaleElementReferenceException:
+                class_name = None
+
             if must_contain_class is None:
                 return dom_element
-            elif must_contain_class in class_name:
+            elif class_name is not None and must_contain_class in class_name:
                 return dom_element
 
         return None
@@ -149,8 +154,5 @@ def start_game_against_jimmy_on_chess_dot_com():
     return driver
 
 
-
-
-
-    print(choose_button)
-    #driver.close()
+def is_game_over(driver):
+    read_element_by_class_name(driver, "modal-game-over-header-component", None) is not None

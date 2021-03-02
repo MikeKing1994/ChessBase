@@ -55,10 +55,10 @@ class Board:
         return Board(self.Pieces)
 
     def get_all_white_pieces(self):
-        return [x for x in self.Pieces if x.IsWhite]
+        return [x for x in self.Pieces if x.IsWhite and not x.Taken]
 
     def get_all_black_pieces(self):
-        return [x for x in self.Pieces if not x.IsWhite]
+        return [x for x in self.Pieces if not x.IsWhite and not x.Taken]
 
     def how_many_pieces_for_white(self):
         pieces = self.get_all_white_pieces()
@@ -132,7 +132,7 @@ class Board:
 
     def try_get_piece_on_square(self, pos):
         for item in self.Pieces:
-            if item.Position == pos:
+            if item.Position == pos and not item.Taken:
                 return item
 
         return None

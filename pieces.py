@@ -19,7 +19,7 @@ class Knight(Piece):
 
         move_valid = False
 
-        if abs(delta_x) == 2 and abs(delta_y == 1):
+        if abs(delta_x) == 2 and abs(delta_y) == 1:
             move_valid = True
         elif abs(delta_x) == 1 and abs(delta_y) == 2:
             move_valid = True

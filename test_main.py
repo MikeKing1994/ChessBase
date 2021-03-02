@@ -342,3 +342,31 @@ class TestBoard(TestBoard):
                     King(1, 4, 7, False)
                 ])
             self.assertFalse(pawn.is_move_valid(False, new_board, Position(3, 1)))
+
+    def test_king_cannot_take_knight_if_protected(self):
+        with self.assertRaises(MoveCausesYourKingToBeInCheckError):
+            white_king = King(1, 5, 3, True)
+            new_board = Board(
+                [
+                    white_king,
+                    Knight(1, 6, 3, False),
+                    Knight(2, 4, 4, False),
+                    King(1, 4, 7, False)
+                ])
+            should_not_be_valid = white_king.is_move_valid(False, new_board, Position(6, 3))
+            print(should_not_be_valid)
+
+    def test_knight_can_move_to_empty_square_even_if_piece_was_once_taken_there(self):
+        white_king = King(1, 5, 3, True)
+        black_knight = Knight(1, 4, 4, False)
+        taken_black_piece = Knight(2, 6, 3, False)
+        taken_black_piece.Taken = True
+
+        new_board = Board(
+            [
+                white_king,
+                black_knight,
+                taken_black_piece,
+                King(1, 4, 7, False)
+            ])
+        self.assertTrue(black_knight.is_move_valid(False, new_board, Position(6, 3)))

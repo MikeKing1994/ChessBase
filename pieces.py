@@ -127,6 +127,7 @@ class Pawn(Piece):
 
         delta_x = pos.X - self.Position.X
         delta_y = pos.Y - self.Position.Y
+        is_forward = (delta_y > 0) == self.is_white()
 
         move_valid = False
 
@@ -141,7 +142,7 @@ class Pawn(Piece):
             move_valid = True
 
         # capture diagonally, must be a capture
-        if abs(delta_y) == 1 and abs(delta_x) == 1:
+        if abs(delta_y) == 1 and abs(delta_x) == 1 and is_forward:
             piece_on_new_square = b.try_get_piece_on_square(pos)
             if piece_on_new_square is None or (piece_on_new_square.is_white() == self.IsWhite):
                 raise DiagonalPawnMoveMustBeACaptureError()

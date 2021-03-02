@@ -332,12 +332,13 @@ class TestBoard(TestBoard):
             self.assertFalse(pawn.is_move_valid(False, new_board, Position(2, 3)))
 
     def test_pawn_cannot_move_backwards(self):
-        pawn = Pawn(1, 2, 2, True)
-        new_board = Board(
-            [
-                Rook(1, 3, 1, False),
-                King(1, 4, 0, True),
-                pawn,
-                King(1, 4, 7, False)
-            ])
-        self.assertFalse(pawn.is_move_valid(False, new_board, Position(3, 1)))
+        with self.assertRaises(PawnMayOnlyMoveLikeAPawnError):
+            pawn = Pawn(1, 2, 2, True)
+            new_board = Board(
+                [
+                    Rook(1, 3, 1, False),
+                    King(1, 4, 0, True),
+                    pawn,
+                    King(1, 4, 7, False)
+                ])
+            self.assertFalse(pawn.is_move_valid(False, new_board, Position(3, 1)))

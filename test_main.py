@@ -370,3 +370,27 @@ class TestBoard(TestBoard):
                 King(1, 4, 7, False)
             ])
         self.assertTrue(black_knight.is_move_valid(False, new_board, Position(6, 3)))
+
+    def test_king_checkmated(self):
+        white_king = King(1, 7, 0, True)
+        new_board = Board(
+            [
+                white_king,
+                Pawn(1, 6, 1, True),
+                Pawn(1, 7, 1, True),
+                Rook(1, 4, 0, False),
+                King(1, 4, 7, False)
+            ])
+        self.assertTrue(new_board.is_white_king_checkmated())
+
+    def test_king_not_checkmated(self):
+        white_king = King(1, 7, 0, True)
+        new_board = Board(
+            [
+                white_king,
+                Pawn(1, 6, 1, True),
+                Pawn(1, 7, 2, True),
+                Rook(1, 4, 0, False),
+                King(1, 4, 7, False)
+            ])
+        self.assertFalse(new_board.is_white_king_checkmated())

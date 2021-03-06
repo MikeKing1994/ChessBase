@@ -240,4 +240,27 @@ class Board:
     def is_white_king_checkmated(self):
         if not self.is_white_king_in_check():
             return False
-        # not finished
+        checkmated = True
+
+        for piece in self.get_all_white_pieces():
+            for move in piece.get_all_valid_moves(False, self):
+                temp_board = copy.deepcopy(self)
+                piece.move(temp_board, move.To)
+                if not temp_board.is_white_king_in_check():
+                    checkmated = False
+
+        return checkmated
+
+    def is_black_king_checkmated(self):
+        if not self.is_black_king_in_check():
+            return False
+        checkmated = True
+
+        for piece in self.get_all_black_pieces():
+            for move in piece.get_all_valid_moves(False, self):
+                temp_board = copy.deepcopy(self)
+                piece.move(temp_board, move.To)
+                if not temp_board.is_black_king_in_check():
+                    checkmated = False
+
+        return checkmated

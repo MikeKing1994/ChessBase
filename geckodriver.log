@@ -1745,3 +1745,14 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1614703992557	Marionette	WARN	TLS certificate errors will be ignored for this session
 1614703992572	Marionette	ERROR	[15] No reply from Marionette:Register
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+1614712475023	geckodriver	INFO	Listening on 127.0.0.1:63743
+1614712478096	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofilenN02V9"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614712483080	Marionette	INFO	Listening on port 63751
+1614712483201	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.chess.com/bundles/app/js/vs-personalities-beta.client.f1d6596f.js, line 2: TypeError: r[0] is undefined
+JavaScript error: https://www.chess.com/bundles/app/js/vs-personalities-beta.client.f1d6596f.js, line 2: TypeError: r[0] is undefined
+1614712765689	Marionette	INFO	Stopped listening on port 63751
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+

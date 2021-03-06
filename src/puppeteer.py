@@ -140,7 +140,7 @@ def get_board_only_after_opponent_plays(driver, previous_board):
 
 
 def start_game_against_jimmy_on_chess_dot_com():
-    driver = webdriver.Firefox(executable_path=r'geckodriver\geckodriver.exe')
+    driver = webdriver.Firefox(executable_path=r'/geckodriver/geckodriver.exe')
     driver.get("https://www.chess.com/play/computer")
     wait = WebDriverWait(driver, 10)
 

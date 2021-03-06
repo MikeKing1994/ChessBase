@@ -8,7 +8,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 from shared import Position
 from pieces import King, Queen, Bishop, Knight, Rook, Pawn
 from board import Board
-from exceptions import ChessDotComWillNotAllowMove
+from exceptions import ChessDotComWillNotAllowMove, ChessDotComThinksGameIsOver
 import time
 
 
@@ -45,6 +45,9 @@ def read_element_by_class_name(driver, target_class_name, must_contain_class):
 
 
 def _move_piece_internal(driver, action_chains, move_from_class, move_to_class):
+    if is_game_over(driver):
+        raise ChessDotComThinksGameIsOver()
+
     move_from = read_element_by_class_name(driver, move_from_class, "piece")
     if move_from is None:
         raise ChessDotComWillNotAllowMove(move_from_class, move_to_class)

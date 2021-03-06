@@ -66,3 +66,8 @@ class CannotCaptureOwnPieceError(Exception):
 class ChessDotComWillNotAllowMove(Exception):
     def __init__(self, from_position, to_position):
         self.message = f"we tried to move from: {from_position} to {to_position}, but chess.com wouldn't allow it"
+
+
+class ChessDotComThinksGameIsOver(Exception):
+    def __init__(self, from_position, to_position):
+        self.message = f"we tried to move from: {from_position} to {to_position}, but chess.com has the game over overlay open"

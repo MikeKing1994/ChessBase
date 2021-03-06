@@ -22,7 +22,10 @@ class RandomGameBot:
 
         if all_valid_moves:
             first_move = random.choice(all_valid_moves)
-            move_piece_on_chess_dot_com(game_driver, first_move.From, first_move.To)
+            try:
+                move_piece_on_chess_dot_com(game_driver, first_move.From, first_move.To)
+            except ChessDotComThinksGameIsOver:
+                return True
 
         updated_board = get_board_only_after_opponent_plays(game_driver, self.board)
 
@@ -42,7 +45,7 @@ class RandomGameBot:
 
         print("game complete")
 
-        if self.board.is_white_king_in_check():
+        if self.board.is_white_king_checkmated():
             print("we lost :-(")
         else:
             print("we actually won!!!")

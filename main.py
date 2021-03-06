@@ -23,9 +23,14 @@ class RandomGameBot:
         if all_valid_moves:
             first_move = random.choice(all_valid_moves)
             move_piece_on_chess_dot_com(game_driver, first_move.From, first_move.To)
-        get_board_only_after_opponent_plays(game_driver, self.board)
 
-        return is_game_over(game_driver)
+        updated_board = get_board_only_after_opponent_plays(game_driver, self.board)
+
+        if updated_board.is_white_king_checkmated() or updated_board.is_black_king_checkmated():
+            self.board = updated_board
+            return True
+
+        return False
 
     def play(self):
         game_driver = start_game_against_jimmy_on_chess_dot_com()
@@ -36,6 +41,11 @@ class RandomGameBot:
             game_over = self.play_cycle(game_driver)
 
         print("game complete")
+
+        if self.board.is_white_king_in_check():
+            print("we lost :-(")
+        else:
+            print("we actually won!!!")
 
 
 if __name__ == '__main__':

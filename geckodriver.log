@@ -1779,17 +1779,30 @@ IPDL protocol error: Handler returned error code!
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1615034856343	Marionette	INFO	Listening on port 51277
 1615034856567	Marionette	WARN	TLS certificate errors will be ignored for this session
-1615034993778	geckodriver	INFO	Listening on 127.0.0.1:51384
-1615034996850	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofilelaI3gs"
-console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
-1615034998951	Marionette	INFO	Listening on port 51392
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+nette	INFO	Listening on port 51392
 1615034998998	Marionette	WARN	TLS certificate errors will be ignored for this session
-1615035952572	geckodriver	INFO	Listening on 127.0.0.1:51778
-1615035955644	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofile7FgDV4"
-console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
-1615035960432	Marionette	INFO	Listening on port 51786
-1615035960925	Marionette	WARN	TLS certificate errors will be ignored for this session
-1615037635943	geckodriver	INFO	Listening on 127.0.0.1:52128
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x6B0027,name=PNecko::Msg_RemoveRequestContext) Closed channel: cannot send/recv
+
+943	geckodriver	INFO	Listening on 127.0.0.1:52128
 1615037639025	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofile1SvxIJ"
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1615037643843	Marionette	INFO	Listening on port 52136
@@ -1808,3 +1821,24 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1615046494504	Marionette	INFO	Listening on port 52599
 1615046494982	Marionette	WARN	TLS certificate errors will be ignored for this session
+[Parent 6940, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x6B0027,name=PNecko::Msg_RemoveRequestContext) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A015A,name=PContent::Msg_InsertNewFocusActionId) Closed channel: cannot send/recv
+
+1615407777355	geckodriver	INFO	Listening on 127.0.0.1:65206
+1615407780330	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Mike\\AppData\\Local\\Temp\\rust_mozprofileQkhbVJ"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1615407791487	Marionette	INFO	Listening on port 65214
+1615407792011	Marionette	WARN	TLS certificate errors will be ignored for this session

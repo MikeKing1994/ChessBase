@@ -13,6 +13,9 @@ class Position:
     def __eq__(self, other):
         return self.X == other.X and self.Y == other.Y
 
+    def to_string(self):
+        return f'({self.X}, {self.Y})'
+
 
 class Move:
     From: Position
@@ -24,6 +27,9 @@ class Move:
 
     def __eq__(self, other):
         return self.From == other.From and self.To == other.To
+
+    def to_string(self):
+        return f'{self.From.to_string()} to {self.To.to_string()}'
 
 
 class Piece:

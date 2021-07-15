@@ -14,7 +14,7 @@ class TestBasic(unittest.TestCase):
 class TestLogging(TestBasic):
     def test_file_name_generation(self):
         file_name = generate_log_file_name()
-        self.assertTrue(file_name.endswith(".txt"))
+        self.assertTrue(file_name.endswith(".log"))
 
 
 class Tests(TestBasic):

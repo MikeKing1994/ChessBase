@@ -8,6 +8,8 @@ from pieces import King, Queen, Bishop, Knight, Rook, Pawn
 from board import Board
 import time
 import random
+from file_logging import set_up_log_file
+import logging
 
 
 class RandomGameBot:
@@ -22,6 +24,8 @@ class RandomGameBot:
 
         if all_valid_moves:
             first_move = random.choice(all_valid_moves)
+            logging.info('Attempting move: %s', first_move.to_string())
+
             try:
                 move_piece_on_chess_dot_com(game_driver, first_move.From, first_move.To)
             except ChessDotComThinksGameIsOver:
@@ -36,6 +40,9 @@ class RandomGameBot:
         return False
 
     def play(self):
+        set_up_log_file()
+        logging.info('Game started')
+
         game_driver = start_game_against_jimmy_on_chess_dot_com()
         self.board = read_board(game_driver)
         game_over = False
@@ -43,12 +50,12 @@ class RandomGameBot:
         while not game_over:
             game_over = self.play_cycle(game_driver)
 
-        print("game complete")
+        logging.info('Game complete')
 
         if self.board.is_white_king_checkmated():
-            print("we lost :-(")
+            logging.info("we lost :-(")
         else:
-            print("we actually won!!!")
+            logging.info("we actually won!!!")
 
 
 if __name__ == '__main__':

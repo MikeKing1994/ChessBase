@@ -1,3 +1,6 @@
+import logging
+
+
 class MoveOffBoardError(Exception):
     def __init__(self):
         self.message = "The given move was off the board x and y values should be between 0 and 8"
@@ -65,9 +68,11 @@ class CannotCaptureOwnPieceError(Exception):
 
 class ChessDotComWillNotAllowMove(Exception):
     def __init__(self, from_position, to_position):
+        logging.exception("exception thrown")
         self.message = f"we tried to move from: {from_position} to {to_position}, but chess.com wouldn't allow it"
 
 
 class ChessDotComThinksGameIsOver(Exception):
     def __init__(self, from_position, to_position):
+        logging.exception("exception thrown")
         self.message = f"we tried to move from: {from_position} to {to_position}, but chess.com has the game over overlay open"

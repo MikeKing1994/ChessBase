@@ -10,6 +10,7 @@ from pieces import King, Queen, Bishop, Knight, Rook, Pawn
 from board import Board
 from exceptions import ChessDotComWillNotAllowMove, ChessDotComThinksGameIsOver
 import time
+import logging
 
 
 def get_chess_dot_com_square_name_from_position(pos):
@@ -28,6 +29,7 @@ def read_element_by_class_name(driver, target_class_name, must_contain_class):
             try:
                 located_class_names.append((dom_element, dom_element.get_attribute("class")))
             except StaleElementReferenceException:
+                logging.exception("exception thrown")
                 pass
 
         if not located_class_names:
@@ -150,6 +152,7 @@ def start_game_against_jimmy_on_chess_dot_com():
         )
         annoying_overlay.click()
     except:
+        logging.exception("exception thrown")
         driver.quit()
 
     choose_button = driver.find_element_by_css_selector("div.selection-menu-footer button")

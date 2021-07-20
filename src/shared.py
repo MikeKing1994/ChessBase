@@ -55,10 +55,10 @@ class Piece:
 
     def move(self, b, pos):
         if self.is_move_valid(False, b, pos):
-            print("move was valid, moving to", pos.X, pos.Y)
+            logging.info(f'move was valid, moving to {pos.toString()}')
             self.move_internal(pos)
         else:
-            print("move invalid, could not move to", pos.X, pos.Y)
+            logging.info(f'move invalid, could not move to {pos.toString()}')
 
     # hack should not use this inheritance trick, should define an interface
     def is_move_valid(self, ignore_king_check, b, pos):

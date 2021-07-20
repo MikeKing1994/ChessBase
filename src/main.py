@@ -10,6 +10,18 @@ import time
 import random
 from file_logging import set_up_log_file
 import logging
+import sys
+
+
+def log_unhandled_exception(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+
+    logging.critical("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+
+sys.excepthook = log_unhandled_exception
 
 
 class RandomGameBot:
@@ -29,6 +41,7 @@ class RandomGameBot:
             try:
                 move_piece_on_chess_dot_com(game_driver, first_move.From, first_move.To)
             except ChessDotComThinksGameIsOver:
+                logging.exception("exception thrown")
                 return True
 
         updated_board = get_board_only_after_opponent_plays(game_driver, self.board)

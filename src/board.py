@@ -1,7 +1,8 @@
-from pieces import *
-from shared import *
+from src.pieces import *
+from src.shared import *
 import logging
 # from PIL import Image, ImageDraw
+from typing import Optional
 
 
 class Board:
@@ -131,7 +132,7 @@ class Board:
 
         return empty
 
-    def try_get_piece_on_square(self, pos):
+    def try_get_piece_on_square(self, pos: Position) -> Optional[Piece]:
         for item in self.Pieces:
             if item.Position == pos and not item.Taken:
                 return item
@@ -231,7 +232,7 @@ class Board:
 
         return False
 
-    def get_all_moves_for_white(self):
+    def get_all_moves_for_white(self) -> list[Move]:
         moves = []
         white_pieces = self.get_all_white_pieces()
         for piece in white_pieces:

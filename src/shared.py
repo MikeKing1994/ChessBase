@@ -1,4 +1,4 @@
-from exceptions import *
+from src.exceptions import *
 import copy
 
 
@@ -53,12 +53,12 @@ class Piece:
     def is_white(self):
         return self.IsWhite
 
-    def move(self, b, pos):
+    def move(self, b, pos: Position):
         if self.is_move_valid(False, b, pos):
-            logging.info(f'move was valid, moving to {pos.toString()}')
+            logging.info(f'move was valid, moving to {pos.to_string()}')
             self.move_internal(pos)
         else:
-            logging.info(f'move invalid, could not move to {pos.toString()}')
+            logging.info(f'move invalid, could not move to {pos.to_string()}')
 
     # hack should not use this inheritance trick, should define an interface
     def is_move_valid(self, ignore_king_check, b, pos):

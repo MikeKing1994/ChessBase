@@ -1,9 +1,8 @@
 import unittest
 from unittest import TestCase
 
-from shared import *
-from board import *
-from pieces import *
+from src.board import Board
+from src.pieces import *
 
 
 class TestBoard(unittest.TestCase):

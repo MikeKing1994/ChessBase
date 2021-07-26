@@ -1,5 +1,5 @@
-from shared import *
-from exceptions import *
+from src.shared import *
+from src.exceptions import *
 
 
 class Knight(Piece):

@@ -71,7 +71,73 @@ class RandomGameBot:
             logging.info("we actually won!!!")
 
 
+class SelfPlay:
+    def __init__(self):
+        self.board = Board()
+
+    def white_play_cycle(self):
+        all_valid_moves = self.board.get_all_moves_for_white()
+        if all_valid_moves:
+            first_move = random.choice(all_valid_moves)
+            piece_to_move = self.board.try_get_piece_on_square(first_move.From)
+
+            logging.info('Attempting white move: %s', first_move.to_string())
+
+            if piece_to_move is not None:
+                type_of_piece = type(piece_to_move)
+                self.board.move_piece(type_of_piece, piece_to_move.IsWhite, piece_to_move.Id, first_move.To)
+
+        if self.board.is_white_king_checkmated() or self.board.is_black_king_checkmated():
+            return True
+
+        return False
+
+    def black_play_cycle(self):
+        all_valid_moves = self.board.get_all_moves_for_black()
+        if all_valid_moves:
+            first_move = random.choice(all_valid_moves)
+            piece_to_move = self.board.try_get_piece_on_square(first_move.From)
+
+            logging.info('Attempting black move: %s', first_move.to_string())
+
+            if piece_to_move is not None:
+                type_of_piece = type(piece_to_move)
+                self.board.move_piece(type_of_piece, piece_to_move.IsWhite, piece_to_move.Id, first_move.To)
+
+        if self.board.is_white_king_checkmated() or self.board.is_black_king_checkmated():
+            return True
+
+        return False
+
+
+def play_against_self():
+    set_up_log_file()
+    logging.info('Game started')
+
+    bot = SelfPlay()
+
+    game_over = False
+    whites_move = True
+
+    while not game_over:
+        if whites_move:
+            game_over = bot.white_play_cycle()
+            whites_move = not whites_move
+            bot.board.print()
+        else:
+            game_over = bot.black_play_cycle()
+            whites_move = not whites_move
+            bot.board.print()
+
+    logging.info('Game complete')
+
+    if bot.board.is_white_king_checkmated():
+        logging.info("white lost :-(")
+    else:
+        logging.info("black lost!!!")
+
+
 if __name__ == '__main__':
-    random_bot = RandomGameBot()
-    random_bot.play()
+    play_against_self()
+
     ()

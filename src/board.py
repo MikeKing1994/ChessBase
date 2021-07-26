@@ -56,10 +56,10 @@ class Board:
     def copy(self):
         return Board(self.Pieces)
 
-    def get_all_white_pieces(self):
+    def get_all_white_pieces(self) -> list[Piece]:
         return [x for x in self.Pieces if x.IsWhite and not x.Taken]
 
-    def get_all_black_pieces(self):
+    def get_all_black_pieces(self) -> list[Piece]:
         return [x for x in self.Pieces if not x.IsWhite and not x.Taken]
 
     def how_many_pieces_for_white(self):
@@ -236,6 +236,13 @@ class Board:
         moves = []
         white_pieces = self.get_all_white_pieces()
         for piece in white_pieces:
+            moves.append(piece.get_all_valid_moves(False, self))
+        return flatten(moves)
+
+    def get_all_moves_for_black(self) -> list[Move]:
+        moves = []
+        black_pieces = self.get_all_black_pieces()
+        for piece in black_pieces:
             moves.append(piece.get_all_valid_moves(False, self))
         return flatten(moves)
 

@@ -70,8 +70,14 @@ class Board:
         pieces = self.get_all_black_pieces()
         return len([x for x in pieces if not x.Taken])
 
+    def get_piece(self,  piece_type, is_white, identifier):
+        return next((piece for piece in self.Pieces
+                     if piece.is_white() == is_white
+                     and piece.Id == identifier
+                     and isinstance(piece, piece_type)))
+
     def get_white_rook_1(self):
-        return next((piece for piece in self.Pieces if piece.is_white() and piece.Id == 1 and isinstance(piece, Rook)))
+        return self.get_piece(Rook, True, 1)
 
     def get_white_knight_1(self):
         return next((piece for piece in self.Pieces if piece.is_white() and piece.Id == 1 and isinstance(piece, Knight)))
@@ -168,7 +174,7 @@ class Board:
                     rank.append('P')
 
                 else:
-                    rank.append('0')
+                    rank.append(' ')
 
             print(rank)
 

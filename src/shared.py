@@ -45,7 +45,7 @@ class Piece:
         self.Position = pos
 
     def taken(self):
-        self.Taken = True
+        return self.Taken
 
     def is_black(self):
         return not self.IsWhite

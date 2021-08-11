@@ -398,5 +398,20 @@ class TestBoard(TestBoard):
         new_board = Board()
         new_board.move_piece(Knight, False, 2, Position(5, 5))
         moved_knight = new_board.try_get_piece_on_square(Position(5, 5))
-        new_board.print()
         self.assertIsInstance(moved_knight, Knight)
+
+    def test_basic_pawn_on_pawn_capture(self):
+        new_board = Board(
+            [
+                King(1, 4, 0, True),
+                Pawn(1, 4, 5, False),
+                Pawn(1, 3, 4, True),
+                King(1, 4, 7, False)
+            ])
+        new_board.move_piece(Pawn, False, 1, Position(3, 4))
+        black_pawn = new_board.try_get_piece_on_square(Position(3, 4))
+        taken_pawn = new_board.get_piece(Pawn, True, 1)
+
+        self.assertIsInstance(black_pawn, Pawn)
+        self.assertTrue(black_pawn.is_black())
+        self.assertTrue(taken_pawn.Taken)

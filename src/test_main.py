@@ -393,3 +393,10 @@ class TestBoard(TestBoard):
                 King(1, 4, 7, False)
             ])
         self.assertFalse(new_board.is_white_king_checkmated())
+
+    def test_basic_black_knight_move(self):
+        new_board = Board()
+        new_board.move_piece(Knight, False, 2, Position(5, 5))
+        moved_knight = new_board.try_get_piece_on_square(Position(5, 5))
+        new_board.print()
+        self.assertIsInstance(moved_knight, Knight)
